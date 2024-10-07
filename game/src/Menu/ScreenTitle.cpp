@@ -17,7 +17,7 @@ void ScreenTitleState::InitScreen(void)
 
 	// Use this to access to the Game instance
 	GameManager& GameInst = GameManager::GetGameManager();
-
+	logoGalaxian = LoadTexture("resources/Menu/MainLogo.png");
 
 }
 
@@ -39,13 +39,15 @@ void ScreenTitleState::UpdateScreen(float deltaTime)
 
 void ScreenTitleState::DrawScreen(void)
 {
-	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+	DrawTexture(logoGalaxian, (GetScreenWidth() - (logoGalaxian.width)) / 2, (GetScreenHeight() - logoGalaxian.height) / 4, WHITE);
+
+	//DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLUE);
 
 	GameManager& GameInst = GameManager::GetGameManager();
 
-	float posx = ((GetScreenWidth() / 2.f) - (MeasureText("by Ester A.", 20) / 2.f));
+	float posx = ((GetScreenWidth() / 2.f) - (MeasureText("by Raquel L.", 20) / 2.f));
 
-	DrawTextEx(GameInst.GetFont(), " by Ester A.", Vector2{ posx, 450.f }, 20, 4, WHITE);
+	DrawTextEx(GameInst.GetFont(), " by Raquel L.", Vector2{ posx, 450.f }, 20, 4, WHITE);
 
 	DrawText("Press Enter for Playing", (GetScreenWidth() / 2) - (MeasureText("Press Enter for Playing", 25) / 2), 500, 25, WHITE);
 	DrawText("Press 'O' for Instructions", (GetScreenWidth() / 2) - (MeasureText("Press 'O' for Instructions", 25) / 2), 560, 25, WHITE);

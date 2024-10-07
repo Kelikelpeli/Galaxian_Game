@@ -1,5 +1,6 @@
 #pragma once
 #include "StateMachineMngr.h"
+#include "raylib.h"
 
 class ScreenLogoState : public StateMachineMngr
 {
@@ -47,6 +48,6 @@ private:
 	int state = 0;              // Logo animation states
 	float alpha = 1.0f;         // Useful for fading
 
-	//Texture2D logo;				//textura del logo
+	Texture2D logo;				//textura del logo
 
 };

@@ -1,5 +1,6 @@
 #include "ScreenLogo.h"
 #include "raylib.h"
+//#include <stdio.h>
 
 ScreenLogoState::ScreenLogoState()
 	: chargeTime_(0)
@@ -17,7 +18,7 @@ void ScreenLogoState::InitScreen(void)
     framesCounter = 0;
     lettersCount = 0;
 
-    logoPositionX = GetScreenWidth() / 2 - 128;
+  /*  logoPositionX = GetScreenWidth() / 2 - 128;
     logoPositionY = GetScreenHeight() / 2 - 128;
 
     topSideRecWidth = 16;
@@ -25,16 +26,29 @@ void ScreenLogoState::InitScreen(void)
     bottomSideRecWidth = 16;
     rightSideRecHeight = 16;
 
-    state = 0;
-    alpha = 1.0f;
+    state = 0;*/
+    alpha = 0.0f;
 
-    //logo = LoadTexture("resources\Menu\Galaxia_Logo.jpg");
+    logo = LoadTexture("resources/Menu/Galaxia_Logo.png");
+    TraceLog(LOG_DEBUG,"Loading logo texture\n");
+    if (logo.id != 0) {
+        //printf("yes Loading logo texture\n");
+    }
 }
 
 //-------------------------------------------------------------
 void ScreenLogoState::UpdateScreen(float deltaTime)
 {
-    if (state == 0)                 // State 0: Top-left square corner blink logic
+    framesCounter++;
+    if(framesCounter>80)
+    {
+        if (alpha < 1.0) {
+            alpha += 0.01f;
+        }
+    }
+    if (framesCounter >= 240) finishScreen = 1;
+  
+   /* if (state == 0)                 // State 0: Top-left square corner blink logic
     {
         framesCounter++;
 
@@ -83,18 +97,18 @@ void ScreenLogoState::UpdateScreen(float deltaTime)
                 }
             }
         }
-    }
+    }*/
 }
 
 //-------------------------------------------------------------
 void ScreenLogoState::DrawScreen(void)
 {
-    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), WHITE);
+   /* DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), WHITE);*/
 
     //dibujar logo
-    //DrawTexture(logo, (GetScreenWidth() - logo.width) / 2, (GetScreenHeight()- logo.height)/2, WHITE);
+    DrawTexture(logo, (GetScreenWidth() - (logo.width)) / 2, (GetScreenHeight()- logo.height)/2, Fade( WHITE, alpha));
 
-    if (state == 0)         // Draw blinking top-left square corner
+   /* if (state == 0)         // Draw blinking top-left square corner
     {
         if ((framesCounter / 10) % 2) DrawRectangle(logoPositionX, logoPositionY, 16, 16, BLACK);
     }
@@ -124,13 +138,13 @@ void ScreenLogoState::DrawScreen(void)
         DrawText(TextSubtext("raylib", 0, lettersCount), GetScreenWidth() / 2 - 44, GetScreenHeight() / 2 + 48, 50, Fade(BLACK, alpha));
 
         if (framesCounter > 20) DrawText("powered by", logoPositionX, logoPositionY - 27, 20, Fade(DARKGRAY, alpha));
-    }
+    }*/
 }
 
 //-------------------------------------------------------------
 void ScreenLogoState::UnloadScreen(void)
 {
- //   UnloadTexture(logo);
+   UnloadTexture(logo);
 
 }
 

@@ -2,6 +2,7 @@
 #pragma once
 #include "StateMachineMngr.h"
 #include "Screen.h"
+#include "raylib.h"
 
 class ScreenTitleState : public StateMachineMngr
 {
@@ -29,5 +30,7 @@ private:
 
 	int framesCounter = 0;
 	int finishScreen = 0;
+
+	Texture2D logoGalaxian;				//textura del logo
 
 };

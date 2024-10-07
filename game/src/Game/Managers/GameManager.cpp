@@ -38,7 +38,7 @@ void GameManager::InitGame()
    // logo = LoadTexture("resources/Menu/Galaxia_Logo");
 
     // Setup and init first screen
-    ScreenState = &ScreenTitleState::getInstance();
+    ScreenState = &ScreenLogoState::getInstance();
     ScreenState->InitScreen();
      
 }

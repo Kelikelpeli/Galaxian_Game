@@ -5,7 +5,7 @@
 // TODO: set the initial state here
 Screen::Screen()
 {
-
+    setState(ScreenLogoState::getInstance());
 }
 
 void Screen::setState(StateMachineMngr& newState)
