@@ -35,6 +35,7 @@ void GameManager::InitGame()
 
     // Load global data (assets that must be available in all screens, i.e. font)
     font = LoadFont("resources/Font/PacManFont.ttf");
+   // logo = LoadTexture("resources/Menu/Galaxia_Logo");
 
     // Setup and init first screen
     ScreenState = &ScreenTitleState::getInstance();

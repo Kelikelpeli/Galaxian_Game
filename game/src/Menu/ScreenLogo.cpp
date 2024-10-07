@@ -27,6 +27,8 @@ void ScreenLogoState::InitScreen(void)
 
     state = 0;
     alpha = 1.0f;
+
+    //logo = LoadTexture("resources\Menu\Galaxia_Logo.jpg");
 }
 
 //-------------------------------------------------------------
@@ -89,6 +91,9 @@ void ScreenLogoState::DrawScreen(void)
 {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), WHITE);
 
+    //dibujar logo
+    //DrawTexture(logo, (GetScreenWidth() - logo.width) / 2, (GetScreenHeight()- logo.height)/2, WHITE);
+
     if (state == 0)         // Draw blinking top-left square corner
     {
         if ((framesCounter / 10) % 2) DrawRectangle(logoPositionX, logoPositionY, 16, 16, BLACK);
@@ -125,6 +130,7 @@ void ScreenLogoState::DrawScreen(void)
 //-------------------------------------------------------------
 void ScreenLogoState::UnloadScreen(void)
 {
+ //   UnloadTexture(logo);
 
 }
 

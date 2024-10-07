@@ -1,9 +1,11 @@
 #include "Screen.h"
 #include "StateMachineMngr.h"
+#include "ScreenLogo.h"
 
 // TODO: set the initial state here
 Screen::Screen()
 {
+
 }
 
 void Screen::setState(StateMachineMngr& newState)

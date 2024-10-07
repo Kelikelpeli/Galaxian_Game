@@ -29,7 +29,7 @@ int main(void)
 {
     // Initialization
     //---------------------------------------------------------
-    InitWindow(GameGlobalVar::screenWidth, GameGlobalVar::screenHeight, "DONKEY KONG ARCADE PAC 1");
+    InitWindow(GameGlobalVar::screenWidth, GameGlobalVar::screenHeight, "GALXY GAME PAC 1");
 
     GameManager & GameMngr = GameManager::GetGameManager();
     GameMngr.InitGame();
