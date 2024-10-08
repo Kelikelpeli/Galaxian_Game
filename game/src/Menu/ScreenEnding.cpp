@@ -17,10 +17,37 @@ void ScreenEndingState::InitScreen(void)
 {
 	framesCounter = 0;
 	finishScreen = 0;
+
+	//posiciones iniciales de las letras game over
+	for (int i = 0; i < 9; i++)
+	{
+		letterYPositions[i] = -100;
+	}
+
+	lettersFallSpeed = 5;
+	currentLetterIndex = 0;
 }
 
 void ScreenEndingState::UpdateScreen(float deltaTime)
 {
+	framesCounter++;
+
+	//animacion Game Over
+	if (currentLetterIndex < 9 && framesCounter % 25 == 0)
+	{
+		currentLetterIndex++;
+		lettersFallSpeed = 5;
+	}
+
+	for (int i = 0; i < currentLetterIndex; i++)
+	{
+		if (letterYPositions[i] < (GetScreenHeight() / 2.f) - 150)
+		{
+			letterYPositions[i]  += lettersFallSpeed;
+			lettersFallSpeed += 1;  //aceleracion
+		}
+	}
+
 	if (IsKeyPressed(KEY_ENTER) )
 	{
 		finishScreen = 1; // GAMEPLAY
@@ -40,12 +67,29 @@ void ScreenEndingState::DrawScreen(void)
 	Font font = GameInst.GetArcadeFont();
 
 	// Write this in case of win
-	DrawTextEx(font, "GAME OVER", Vector2{ (GetScreenWidth() / 2.f) - 150, (GetScreenHeight() / 2.f) -150 }, font.baseSize * 2.0f, 1, RED);
+	if (GameInst.GetGameResult()) 
+	{
+		DrawTextEx(font, "YOU WIN!", Vector2{ (GetScreenWidth() - MeasureTextEx(font, "YOU WIN!", font.baseSize * 2.0f, 1).x) / 2.f, (GetScreenHeight() / 2.f) - 150 }, font.baseSize * 2.0f, 1, WHITE);
 
-	DrawTextEx(font, "YOU WIN!", Vector2{ (GetScreenWidth() / 2.f) - 150, (GetScreenHeight() / 2.f) - 150 }, font.baseSize * 2.0f, 1, WHITE);
+	}
+	else
+	{
+		//DrawTextEx(font, "GAME OVER", Vector2{ (GetScreenWidth() - MeasureTextEx(font, "GAME OVER", font.baseSize * 2.5f, 1).x) / 2.f, (GetScreenHeight() / 2.f) - 150 }, font.baseSize * 2.5f, 1, RED);
 
-	DrawText("Press Enter for Playing", (GetScreenWidth() / 2.f) - (MeasureText("Press Enter for Playing", 25) / 2), (GetScreenHeight() / 2.f) + 50, 25, WHITE);
-	DrawText("Press 'O' for Options", (GetScreenWidth() / 2.f) - (MeasureText("Press 'I' for Instructions", 25) / 2), (GetScreenHeight() / 2.f) + 100, 25, WHITE);
+		const char* text = "GAME OVER";
+		float posX = (GetScreenWidth() - MeasureTextEx(font, text, font.baseSize * 2.5f, 1).x) / 2.0f;
+
+		// Dibuja cada letra individualmente en su posición actual
+		for (int i = 0; i < 9; i++) {
+			char letter[2] = { text[i], '\0' };  // Convertir la letra a cadena
+			DrawTextEx(font, letter, Vector2{ posX,float(letterYPositions[i]) }, font.baseSize * 2.5f, 1, RED);
+			posX += MeasureTextEx(font, letter, font.baseSize * 2.5f, 1).x;  // Mueve la posición X para la siguiente letra
+		}
+	}
+
+	DrawTextEx(font, "Press Enter for Playing", Vector2{ (GetScreenWidth() - MeasureTextEx(font, "Press Enter for Playing", 25, 2).x) / 2.f, 450.f }, 25, 2, WHITE);
+	DrawTextEx(font, "Press 'O' for Options", Vector2{ (GetScreenWidth() - MeasureTextEx(font, "Press 'O' for Options", 25, 2).x) / 2.f, 500.f }, 25, 2, WHITE);
+
 
 }
 
@@ -53,6 +97,7 @@ void ScreenEndingState::UnloadScreen(void)
 {
 	//Let's unload all the enemies lines
 	GameManager& GameInst = GameManager::GetGameManager();
+
 
 }
 

@@ -28,4 +28,9 @@ private:
 	int framesCounter = 0;
 	int finishScreen = 0;
 
+	//animacion game over
+	int letterYPositions[9];
+	int currentLetterIndex = 0;
+	int lettersFallSpeed = 0;
+
 };

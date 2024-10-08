@@ -111,6 +111,7 @@ void ScreenTitleState::DrawScreen(void)
 void ScreenTitleState::UnloadScreen(void)
 {
 	GameManager& GameInst = GameManager::GetGameManager();
+	UnloadTexture(logoGalaxian);
 
 }
 

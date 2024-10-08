@@ -46,6 +46,9 @@ public:
 	void MapsForwardProgression();
 	void MapsBackwardProgression();
 
+	void SetGameResult(bool won);
+	bool GetGameResult();
+
 
 
 	static GameManager& GetGameManager();
@@ -84,5 +87,8 @@ private:
 	Sound fxCoin = { 0 };
 
 	StateMachineMngr* ScreenState;
+
+	//variable de ganar o perder
+	bool hasWon=false;
 
 };

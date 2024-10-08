@@ -33,6 +33,7 @@ private:
 
 	Texture2D logoGalaxian = { 0 };				//textura del logo
 
+	//variables para logica de dibujo de by Raquel L.
 	int currentCharIndex = 0;
 	int blinkCounter = 0;
 	int blinkSpeed = 0;

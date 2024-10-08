@@ -269,3 +269,12 @@ void GameManager::MapsBackwardProgression()
 
 }
 
+//asignar si el jugador gana o pierde
+void GameManager::SetGameResult(bool won) {
+    hasWon = won;
+}
+
+bool GameManager::GetGameResult() {
+    return hasWon;
+}
+
