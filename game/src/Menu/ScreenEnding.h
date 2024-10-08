@@ -33,4 +33,9 @@ private:
 	int currentLetterIndex = 0;
 	int lettersFallSpeed = 0;
 
+	//Animacion you win 
+	float winScale = 0.0f;
+	float scaleSpeed = 0.05f;
+	bool scalingUp = true;
+
 };

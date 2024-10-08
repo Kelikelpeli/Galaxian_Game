@@ -26,25 +26,49 @@ void ScreenEndingState::InitScreen(void)
 
 	lettersFallSpeed = 5;
 	currentLetterIndex = 0;
+
+	//incializar variables animacion you win
+	winScale = 0.0f;
+	scaleSpeed = 0.15f;
+	scalingUp = true;
 }
 
 void ScreenEndingState::UpdateScreen(float deltaTime)
 {
 	framesCounter++;
 
-	//animacion Game Over
-	if (currentLetterIndex < 9 && framesCounter % 25 == 0)
+	if (GameManager::GameManager().GetGameResult()==false)
 	{
-		currentLetterIndex++;
-		lettersFallSpeed = 5;
-	}
 
-	for (int i = 0; i < currentLetterIndex; i++)
-	{
-		if (letterYPositions[i] < (GetScreenHeight() / 2.f) - 150)
+		//animacion Game Over
+		if (currentLetterIndex < 9 && framesCounter % 25 == 0)
 		{
-			letterYPositions[i]  += lettersFallSpeed;
-			lettersFallSpeed += 1;  //aceleracion
+			currentLetterIndex++;
+			lettersFallSpeed = 5;
+		}
+
+		for (int i = 0; i < currentLetterIndex; i++)
+		{
+			if (letterYPositions[i] < (GetScreenHeight() / 2.f) - 150)
+			{
+				letterYPositions[i] += lettersFallSpeed;
+				lettersFallSpeed += 1;  //aceleracion
+			}
+		}
+	}
+	//animacion you win
+	if (GameManager::GameManager().GetGameResult()) 
+	{
+		if (scalingUp)
+		{
+			winScale += scaleSpeed;
+			if (winScale >= 3.5f) scalingUp = false;
+		}
+		else
+		{
+			winScale -= scaleSpeed;
+			if (winScale < 2.5f) scalingUp = true;
+			if (winScale == 3.0f) winScale = 3.0f;
 		}
 	}
 
@@ -69,8 +93,11 @@ void ScreenEndingState::DrawScreen(void)
 	// Write this in case of win
 	if (GameInst.GetGameResult()) 
 	{
-		DrawTextEx(font, "YOU WIN!", Vector2{ (GetScreenWidth() - MeasureTextEx(font, "YOU WIN!", font.baseSize * 2.0f, 1).x) / 2.f, (GetScreenHeight() / 2.f) - 150 }, font.baseSize * 2.0f, 1, WHITE);
+		//DrawTextEx(font, "YOU WIN!", Vector2{ (GetScreenWidth() - MeasureTextEx(font, "YOU WIN!", font.baseSize * 2.0f, 1).x) / 2.f, (GetScreenHeight() / 2.f) - 150 }, font.baseSize * 2.0f, 1, WHITE);
 
+		Vector2 textSize = MeasureTextEx(font, "YOU WIN!", font.baseSize * winScale, 1);
+		DrawTextEx(font, "YOU WIN!", Vector2{ (GetScreenWidth() - textSize.x) / 2.f, (GetScreenHeight() / 2.f) - 150 },
+			font.baseSize * winScale, 1, YELLOW);
 	}
 	else
 	{

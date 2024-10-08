@@ -89,6 +89,6 @@ private:
 	StateMachineMngr* ScreenState;
 
 	//variable de ganar o perder
-	bool hasWon=false;
+	bool hasWon=true;
 
 };
