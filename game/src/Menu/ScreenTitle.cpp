@@ -1,6 +1,7 @@
 #include "ScreenTitle.h"
 #include "raylib.h"
 #include "Game/Managers/GameManager.h"
+#include <xstring>
 
 ScreenTitleState& ScreenTitleState::getInstance()
 {
@@ -19,12 +20,33 @@ void ScreenTitleState::InitScreen(void)
 	GameManager& GameInst = GameManager::GetGameManager();
 	logoGalaxian = LoadTexture("resources/Menu/MainLogo.png");
 
+	text = "by Raquel L.";
+	currentCharIndex = 0;
+	blinkCounter = 0;
+	blinkSpeed = 0.5f;
+	isBlinking = true;
+
+
 }
 
 void ScreenTitleState::UpdateScreen(float deltaTime)
 {
 	GameManager& GameInst = GameManager::GetGameManager();
 
+	//animación de letras
+
+	framesCounter++;
+	if (framesCounter > 60&&framesCounter%4==0)
+	{
+		//parpadeo
+		if (framesCounter % 2 == 0) isBlinking = !isBlinking;
+
+		//avanzar de letra
+
+		if (currentCharIndex < strlen(text)) {
+			currentCharIndex++;
+		}
+	}
 
 	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
 	{
@@ -39,18 +61,49 @@ void ScreenTitleState::UpdateScreen(float deltaTime)
 
 void ScreenTitleState::DrawScreen(void)
 {
+	//logo
 	DrawTexture(logoGalaxian, (GetScreenWidth() - (logoGalaxian.width)) / 2, (GetScreenHeight() - logoGalaxian.height) / 4, WHITE);
 
 	//DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLUE);
 
 	GameManager& GameInst = GameManager::GetGameManager();
+	
+	//texto
+	float textWidth = MeasureTextEx(GameInst.GetArcadeFont(), text, 20, 2).x; // Aseguramos el espaciado de 2 para evitar problemas
+	float posx = (GetScreenWidth() / 2.f) - (textWidth / 2.f);
+	//DrawTextEx(GameInst.GetArcadeFont(), "by Raquel L.", Vector2{ posx, 450.f }, 20, 2, WHITE);
+	// letra por letra
+	for (int i = 0; i < strlen(text); i++) 
+	{
+		char letter[2] = { text[i], '\0' };
 
-	float posx = ((GetScreenWidth() / 2.f) - (MeasureText("by Raquel L.", 20) / 2.f));
+		Font currentFont;
+		if (i < currentCharIndex) 
+		{
+			currentFont = GameInst.GetArcadeFont();
+		}
+		else
+		{
+			currentFont = GameInst.GetAlienFont();
 
-	DrawTextEx(GameInst.GetFont(), " by Raquel L.", Vector2{ posx, 450.f }, 20, 4, WHITE);
+		}
 
-	DrawText("Press Enter for Playing", (GetScreenWidth() / 2) - (MeasureText("Press Enter for Playing", 25) / 2), 500, 25, WHITE);
-	DrawText("Press 'O' for Instructions", (GetScreenWidth() / 2) - (MeasureText("Press 'O' for Instructions", 25) / 2), 560, 25, WHITE);
+		//dibujar letra
+		DrawTextEx(currentFont, letter, Vector2{ posx, 450.f }, 20, 2, WHITE);
+
+		//calcular posicion de la proxima
+		posx += MeasureTextEx(currentFont, letter, 20, 2).x;
+	}
+
+
+	textWidth = MeasureTextEx(GameInst.GetArcadeFont(), "Press Enter for Playing", 25, 3).x;
+	posx = (GetScreenWidth() / 2.f) - (textWidth / 2.f);
+	DrawTextEx(GameInst.GetArcadeFont(), "Press Enter for Playing", Vector2{ posx, 500.f }, 25, 3, WHITE);
+
+
+	textWidth = MeasureTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", 25, 3).x;
+	posx = (GetScreenWidth() / 2.f) - (textWidth / 2.f);
+	DrawTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", Vector2{ posx, 560.f }, 25, 3, WHITE);
 
 
 }

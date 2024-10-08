@@ -30,7 +30,8 @@ public:
 
 	void ClearGameVar();
 
-	Font& GetFont() { return font; }
+	Font& GetArcadeFont() { return arcadeFont; }
+	Font& GetAlienFont() { return alienFont; }
 
 	int GetScore() { return score; }
 	void SetScore(int newValue) { score = newValue; }
@@ -67,6 +68,7 @@ private:
 
 	int score = 0;
 	int seconds = 0;
+	bool win = false;
 
 	Level NumLevel = Level::Title;
 
@@ -76,7 +78,8 @@ private:
 
 	//------------
 
-	Font font = { 0 };
+	Font arcadeFont = { 0 };
+	Font alienFont = { 0 };
 	Music music = { 0 };
 	Sound fxCoin = { 0 };
 

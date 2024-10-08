@@ -31,6 +31,14 @@ private:
 	int framesCounter = 0;
 	int finishScreen = 0;
 
-	Texture2D logoGalaxian;				//textura del logo
+	Texture2D logoGalaxian = { 0 };				//textura del logo
 
+	int currentCharIndex = 0;
+	int blinkCounter = 0;
+	int blinkSpeed = 0;
+	bool isBlinking = true;
+
+	const char* text;
+
+	
 };

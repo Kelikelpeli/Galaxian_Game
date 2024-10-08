@@ -34,11 +34,11 @@ void GameManager::InitGame()
 {
 
     // Load global data (assets that must be available in all screens, i.e. font)
-    font = LoadFont("resources/Font/PacManFont.ttf");
-   // logo = LoadTexture("resources/Menu/Galaxia_Logo");
+    arcadeFont = LoadFont("resources/Fonts/ArcadeFont.ttf");
+    alienFont = LoadFont("resources/Fonts/AlienFont.ttf");
 
     // Setup and init first screen
-    ScreenState = &ScreenLogoState::getInstance();
+    ScreenState = &ScreenEndingState::getInstance();
     ScreenState->InitScreen();
      
 }
@@ -161,7 +161,8 @@ void GameManager::UnloadGame(void)
     ClearGameVar();
 
     // Unload global data loaded
-    UnloadFont(font);
+    UnloadFont(alienFont);
+    UnloadFont(arcadeFont);
     UnloadMusicStream(music);
     UnloadSound(fxCoin);
 

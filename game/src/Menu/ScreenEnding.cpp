@@ -37,7 +37,7 @@ void ScreenEndingState::DrawScreen(void)
 	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 	GameManager& GameInst = GameManager::GetGameManager();
 
-	Font font = GameInst.GetFont();
+	Font font = GameInst.GetArcadeFont();
 
 	// Write this in case of win
 	DrawTextEx(font, "GAME OVER", Vector2{ (GetScreenWidth() / 2.f) - 150, (GetScreenHeight() / 2.f) -150 }, font.baseSize * 2.0f, 1, RED);

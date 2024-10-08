@@ -43,7 +43,7 @@ void ScreenGameplayState::DrawScreen(void)
 	
 	// UI Score, lives
 
-	Font font = GameInst.GetFont();
+	Font font = GameInst.GetArcadeFont();
 
 	DrawText("SCORE:", 300.f, 100.f, 25, WHITE);
 	DrawText(to_string(GameInst.GetScore()).c_str(), 440.f, 100.f, 25, WHITE);
