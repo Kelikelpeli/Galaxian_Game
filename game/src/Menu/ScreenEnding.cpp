@@ -29,7 +29,7 @@ void ScreenEndingState::InitScreen(void)
 
 	//incializar variables animacion you win
 	winScale = 0.0f;
-	scaleSpeed = 0.15f;
+	scaleSpeed = 0.2f;
 	scalingUp = true;
 }
 
@@ -67,8 +67,16 @@ void ScreenEndingState::UpdateScreen(float deltaTime)
 		else
 		{
 			winScale -= scaleSpeed;
-			if (winScale < 2.5f) scalingUp = true;
-			if (winScale == 3.0f) winScale = 3.0f;
+			if (winScale <= 2.5f) scalingUp = true;
+
+			// Reducir la amplitud de las oscilaciones hasta estabilizar la escala
+			if (scaleSpeed > 0.01f) {
+				scaleSpeed *= 0.93f;  // Reduce la velocidad del rebote hasta detenerse
+			}
+			else {
+				winScale = 3.0f;  // Fijar en la escala final
+				scaleSpeed = 0;   // Detener el rebote
+			}
 		}
 	}
 
