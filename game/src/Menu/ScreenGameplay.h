@@ -2,6 +2,7 @@
 #include "StateMachineMngr.h"
 #include "raylib.h"
 #include "screen.h"
+#define MAX_PROYECTILES 4
 
 class ScreenGameplayState : public StateMachineMngr
 {
@@ -46,14 +47,19 @@ private:
 	bool debug_stairs = false;
 
 	//player
-	float posYPj= 0.f;
-	float posXPj = 0.f;
+	float pjPosY= 0.f;
+	float pjPosX = 0.f;
 	float pjSpeed = 0.f;
 	float pjWidth = 25.f;
 	float pjHeight = 30.f;
-	Vector2 startPos;
-	bool moveR = false;
-	Rectangle pj = { posXPj, posYPj,pjWidth,pjHeight};
 
+	//proyectiles
+	
+	float pySpeed = 250.f;
+	float pyEnfriamiento = 0.f;  //contador para esperar 0.5 segundos entre proyectiles
+	bool pyLanzado[MAX_PROYECTILES];
+	Rectangle proyectil[MAX_PROYECTILES];
+
+	void LanzarProyectil();
 
 };

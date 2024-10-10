@@ -9,6 +9,8 @@
 #include <string>
 
 
+
+
 ScreenGameplayState::ScreenGameplayState()
 {
 
@@ -25,6 +27,7 @@ void ScreenGameplayState::InitScreen(void)
 	framesCounter = 0;
 	finishScreen = 0;
 
+	//TEXTURES
 	landscape = LoadTexture("resources/Game/Landscape.png");
 	player = LoadTexture("resources/Game/Player.png");
 	enemy1 = LoadTexture("resources/Game/Enemy1.png");
@@ -33,10 +36,20 @@ void ScreenGameplayState::InitScreen(void)
 	enemy4 = LoadTexture("resources/Game/Enemy4.png");
 
 	//player
-	posXPj = (GetScreenWidth() / 2);
-	posYPj = (GetScreenHeight() - 30 - 75);
-	startPos = { posXPj, posYPj };
-	pjSpeed = 120;
+	pjPosX = (GetScreenWidth() / 2.f);
+	pjPosY = (GetScreenHeight() - 30.f - 75.f);
+	pjSpeed = 120.f;
+	pjWidth = player.width * 1.f;		//anchura, se comenta para rec rojo
+	pjHeight = player.height * 1.f;	//altura, se comenta para rec rojo
+
+	//proyectiles
+	for (int i = 0; i < MAX_PROYECTILES; i++)
+	{
+		proyectil[i] = { 0, 0, 3.f, 13.f };
+		pyLanzado[i] = false;
+	}
+
+	pyEnfriamiento = 0;
 
 }
 
@@ -44,23 +57,51 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 {
 	EvaluateInput();
 	framesCounter++;
+	pyEnfriamiento -= deltaTime;
 	// GAMEPLAY
 
-	if (IsKeyDown(KEY_D) && posXPj + pjWidth < ((GetScreenWidth() - landscape.width) / 2) + landscape.width)
+	//player
+	if (IsKeyDown(KEY_D) && pjPosX + pjWidth < ((GetScreenWidth() - landscape.width) / 2) + landscape.width)
 	{
-		posXPj += pjSpeed * deltaTime * 1.f;
-
+		pjPosX += pjSpeed * deltaTime * 1.f;
+		//pyPosX = pjPosX + (pjWidth / 2) - (pyWidth / 2);
 
 	}
 
-
-	if (IsKeyDown(KEY_A) && posXPj >(GetScreenWidth() - landscape.width) / 2)
+	if (IsKeyDown(KEY_A) && pjPosX > (GetScreenWidth() - landscape.width) / 2)
 	{
-		posXPj += pjSpeed * deltaTime * -1.f;
+		pjPosX += pjSpeed * deltaTime * -1.f;
+
 	}
-	pj = { posXPj,posYPj, pjWidth, pjHeight };
+	//proyecitles
+	if (IsKeyPressed(KEY_SPACE) && pyEnfriamiento <= 0)
+	{
+		LanzarProyectil();
+		pyEnfriamiento = 0.5f; //reinicio de espera
+	}
 
+	for (int i = 0; i < MAX_PROYECTILES; i++)
+	{
+		if (pyLanzado[i]) {
+			proyectil[i].y -= pySpeed * deltaTime; // Movimiento hacia arriba
 
+			// Si el proyectil sale de la pantalla, se destruye
+			if (proyectil[i].y + proyectil[i].height < 0) {
+				pyLanzado[i] = false;
+			}
+		}
+	}
+}
+void ScreenGameplayState::LanzarProyectil()
+{
+	for (int i = 0; i < MAX_PROYECTILES; i++) {
+		if (!pyLanzado[i]) {
+			proyectil[i].x = pjPosX + (pjWidth / 2) - (proyectil[i].width / 2);  // Centra el proyectil en el jugador
+			proyectil[i].y = pjPosY - proyectil[i].height;  // Aparece encima del jugador
+			pyLanzado[i] = true;  // Activa el proyectil
+			break;  // Lanza un solo proyectil
+		}
+	}
 }
 
 void ScreenGameplayState::DrawScreen(void)
@@ -68,7 +109,27 @@ void ScreenGameplayState::DrawScreen(void)
 
 	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 	DrawTexture(landscape, (GetScreenWidth() - (landscape.width)) / 2, (GetScreenHeight() - landscape.height) / 4, WHITE);
-	DrawRectangle(posXPj, posYPj, pjWidth, pjHeight, RED);
+
+	//Player
+	DrawTexture(player, pjPosX, pjPosY, WHITE);
+	//DrawRectangle(posXPj, posYPj, pjWidth, pjHeight, RED);
+
+	//Proyectiles
+	for (int i = 0; i < MAX_PROYECTILES; i++) 
+	{
+		if (pyLanzado[i]) {
+			DrawRectangleRec(proyectil[i], YELLOW);
+
+		}
+		else if (!pyLanzado[i] && pyEnfriamiento <=0 )
+		{
+			proyectil[i].x = pjPosX + (pjWidth / 2) - (proyectil[i].width / 2);  // Centra el proyectil en el jugador
+			proyectil[i].y = pjPosY - proyectil[i].height;
+			DrawRectangleRec(proyectil[i], YELLOW);
+		}
+		
+
+	}
 
 
 	GameManager& GameInst = GameManager::GetGameManager();
