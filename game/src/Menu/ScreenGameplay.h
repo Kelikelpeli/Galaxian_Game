@@ -1,5 +1,7 @@
 #pragma once
 #include "StateMachineMngr.h"
+#include "raylib.h"
+#include "screen.h"
 
 class ScreenGameplayState : public StateMachineMngr
 {
@@ -24,6 +26,13 @@ private:
 	ScreenGameplayState(const ScreenGameplayState& other);
 	ScreenGameplayState& operator= (const ScreenGameplayState& other);
 
+	//texturas
+	Texture2D landscape = { 0 };
+	Texture2D player = { 0 };
+	Texture2D enemy1 = { 0 };
+	Texture2D enemy2 = { 0 };
+	Texture2D enemy3 = { 0 };
+	Texture2D enemy4 = { 0 };
 	void EvaluateInput();
 	
 	void DebugOptions();

@@ -25,11 +25,19 @@ void ScreenGameplayState::InitScreen(void)
 	framesCounter = 0;
 	finishScreen = 0;
 
+	landscape = LoadTexture("resources/Game/Landscape.png");
+	player = LoadTexture("resources/Game/Player.png");
+	enemy1 = LoadTexture("resources/Game/Eemy1.png");
+	enemy2 = LoadTexture("resources/Game/Enemy2.png");
+	enemy3 = LoadTexture("resources/Game/Enemy3.png");
+	enemy4 = LoadTexture("resources/Game/Enemy4.png");
+
 }
 
 void ScreenGameplayState::UpdateScreen(float deltaTime)
 {
 	EvaluateInput();
+	framesCounter++;
 
 	
 }
@@ -38,6 +46,8 @@ void ScreenGameplayState::DrawScreen(void)
 {
 
 	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+	DrawTexture(landscape, (GetScreenWidth() - (landscape.width)) / 2, (GetScreenHeight() - landscape.height) / 4, WHITE);
+
 
 	GameManager& GameInst = GameManager::GetGameManager();
 	
@@ -45,7 +55,10 @@ void ScreenGameplayState::DrawScreen(void)
 
 	Font font = GameInst.GetArcadeFont();
 
-	DrawText("SCORE:", 300.f, 100.f, 25, WHITE);
+	//DrawTextEX(font,"SCORE:", 300.f, 100.f, 25, WHITE);
+	float textWidth = MeasureTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", 25, 3).x;
+	float posx = (GetScreenWidth() / 2.f) - (textWidth / 2.f);
+	DrawTextEx(font, "SCORE:", Vector2{ posx, 300.f }, 25, 3, WHITE);
 	DrawText(to_string(GameInst.GetScore()).c_str(), 440.f, 100.f, 25, WHITE);
 
 
@@ -53,7 +66,12 @@ void ScreenGameplayState::DrawScreen(void)
 
 void ScreenGameplayState::UnloadScreen(void)
 {
-
+	UnloadTexture(landscape);
+	UnloadTexture(player);
+	UnloadTexture(enemy1);
+	UnloadTexture(enemy2);
+	UnloadTexture(enemy3);
+	UnloadTexture(enemy4);
 }
 
 int  ScreenGameplayState::FinishScreen(void)
