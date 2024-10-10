@@ -27,10 +27,16 @@ void ScreenGameplayState::InitScreen(void)
 
 	landscape = LoadTexture("resources/Game/Landscape.png");
 	player = LoadTexture("resources/Game/Player.png");
-	enemy1 = LoadTexture("resources/Game/Eemy1.png");
+	enemy1 = LoadTexture("resources/Game/Enemy1.png");
 	enemy2 = LoadTexture("resources/Game/Enemy2.png");
 	enemy3 = LoadTexture("resources/Game/Enemy3.png");
 	enemy4 = LoadTexture("resources/Game/Enemy4.png");
+
+	//player
+	posXPj = (GetScreenWidth() / 2);
+	posYPj = (GetScreenHeight() - 30 - 75);
+	startPos = { posXPj, posYPj };
+	pjSpeed = 120;
 
 }
 
@@ -38,8 +44,23 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 {
 	EvaluateInput();
 	framesCounter++;
+	// GAMEPLAY
 
-	
+	if (IsKeyDown(KEY_D) && posXPj + pjWidth < ((GetScreenWidth() - landscape.width) / 2) + landscape.width)
+	{
+		posXPj += pjSpeed * deltaTime * 1.f;
+
+
+	}
+
+
+	if (IsKeyDown(KEY_A) && posXPj >(GetScreenWidth() - landscape.width) / 2)
+	{
+		posXPj += pjSpeed * deltaTime * -1.f;
+	}
+	pj = { posXPj,posYPj, pjWidth, pjHeight };
+
+
 }
 
 void ScreenGameplayState::DrawScreen(void)
@@ -47,10 +68,11 @@ void ScreenGameplayState::DrawScreen(void)
 
 	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 	DrawTexture(landscape, (GetScreenWidth() - (landscape.width)) / 2, (GetScreenHeight() - landscape.height) / 4, WHITE);
+	DrawRectangle(posXPj, posYPj, pjWidth, pjHeight, RED);
 
 
 	GameManager& GameInst = GameManager::GetGameManager();
-	
+
 	// UI Score, lives
 
 	Font font = GameInst.GetArcadeFont();

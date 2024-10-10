@@ -45,4 +45,15 @@ private:
 	bool debug_floor = false;
 	bool debug_stairs = false;
 
+	//player
+	float posYPj= 0.f;
+	float posXPj = 0.f;
+	float pjSpeed = 0.f;
+	float pjWidth = 25.f;
+	float pjHeight = 30.f;
+	Vector2 startPos;
+	bool moveR = false;
+	Rectangle pj = { posXPj, posYPj,pjWidth,pjHeight};
+
+
 };
