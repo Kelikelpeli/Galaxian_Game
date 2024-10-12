@@ -47,6 +47,9 @@ void ScreenGameplayState::InitScreen(void)
 
 	pyEnfriamiento = 0;
 
+	// Inicializar enemigos
+	enemyManager.InitEnemies();
+
 }
 
 void ScreenGameplayState::UpdateScreen(float deltaTime)
@@ -87,6 +90,9 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 			}
 		}
 	}
+
+	// Actualizar enemigos
+	enemyManager.UpdateEnemies(deltaTime);
 }
 void ScreenGameplayState::LanzarProyectil()
 {
@@ -140,23 +146,10 @@ void ScreenGameplayState::DrawScreen(void)
 	DrawTextEx(font, "SCORE:", Vector2{ posx, 300.f }, 25, 3, WHITE);
 	DrawText(to_string(GameInst.GetScore()).c_str(), 440.f, 100.f, 25, WHITE);
 
-
+	// Dibujar enemigos
+	enemyManager.DrawEnemies();
 }
 
-void ScreenGameplayState::InitScreen(void) {
-	// Other initializations
-	enemyManager.InitEnemies();  // Initialize enemies
-}
-
-void ScreenGameplayState::UpdateScreen(float deltaTime) {
-	// Other updates
-	enemyManager.UpdateEnemies(deltaTime);  // Update enemies
-}
-
-void ScreenGameplayState::DrawScreen(void) {
-	// Other draws
-	enemyManager.DrawEnemies();  // Draw enemies
-}
 
 
 void ScreenGameplayState::UnloadScreen(void)

@@ -1,5 +1,6 @@
 #pragma once
-#include "Enemy.h"
+//#include "Enemy.h"
+#include "Game/Enemy.h"
 #include <array>
 #define ROW 6
 #define COL 10

@@ -2,7 +2,9 @@
 #include "StateMachineMngr.h"
 #include "raylib.h"
 #include "screen.h"
-#include "EnemyManager.h"
+//#include "EnemyManager.h"
+#include "../Game/Managers/EnemyManager.h"
+
 #define MAX_PROYECTILES 4
 
 class ScreenGameplayState : public StateMachineMngr
@@ -26,7 +28,6 @@ public:
 	void InitEnemies();
 	void UpdateEnemies(float deltaTime);
 	void DrawEnemies();
-
 private:
 	ScreenGameplayState();
 	ScreenGameplayState(const ScreenGameplayState& other);
