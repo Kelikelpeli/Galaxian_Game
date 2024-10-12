@@ -13,5 +13,12 @@ public:
     void DrawEnemies();
 
 private:
+    //texturas
+    Texture2D enemy1;
+    Texture2D enemy2;
+    Texture2D enemy3;
+    Texture2D enemy4;
+
+
     std::array<std::array<Enemy, COL>, ROW> enemies;
 };

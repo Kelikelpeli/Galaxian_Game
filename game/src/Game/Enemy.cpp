@@ -15,3 +15,18 @@ void Enemy::DrawEnemy() {
         DrawRectangleRec(enemyRect, RED);  // Placeholder drawing for enemy
     }
 }
+void Enemy::SetType(EnemyType type) {
+    this->type = type;
+}
+
+EnemyType Enemy::GetType() {
+    return type;  // Devolver el tipo de enemigo
+}
+
+float Enemy::GetX() {
+    return enemyRect.x;  // Devolver la coordenada X
+}
+
+float Enemy::GetY() {
+    return enemyRect.y;  // Devolver la coordenada Y
+}

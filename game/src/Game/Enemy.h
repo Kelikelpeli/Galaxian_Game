@@ -8,6 +8,10 @@ public:
     void InitEnemy(float x, float y);
     void UpdateEnemy(float deltaTime);
     void DrawEnemy();
+    EnemyType GetType();
+    void SetType(EnemyType type);
+    float GetX();        
+    float GetY();
 
 private:
     Rectangle enemyRect;
