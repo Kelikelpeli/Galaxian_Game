@@ -37,6 +37,7 @@ void GameManager::InitGame()
     arcadeFont = LoadFont("resources/Fonts/ArcadeFont.ttf");
     alienFont = LoadFont("resources/Fonts/AlienFont.ttf");
 
+
     // Setup and init first screen
     ScreenState = &ScreenGameplayState::getInstance();
     ScreenState->InitScreen();

@@ -2,6 +2,7 @@
 #include "StateMachineMngr.h"
 #include "raylib.h"
 #include "screen.h"
+#include "EnemyManager.h"
 #define MAX_PROYECTILES 4
 
 class ScreenGameplayState : public StateMachineMngr
@@ -22,6 +23,10 @@ public:
 
 	static ScreenGameplayState& getInstance();
 
+	void InitEnemies();
+	void UpdateEnemies(float deltaTime);
+	void DrawEnemies();
+
 private:
 	ScreenGameplayState();
 	ScreenGameplayState(const ScreenGameplayState& other);
@@ -30,10 +35,6 @@ private:
 	//texturas
 	Texture2D landscape = { 0 };
 	Texture2D player = { 0 };
-	Texture2D enemy1 = { 0 };
-	Texture2D enemy2 = { 0 };
-	Texture2D enemy3 = { 0 };
-	Texture2D enemy4 = { 0 };
 	void EvaluateInput();
 	
 	void DebugOptions();
@@ -61,5 +62,7 @@ private:
 	Rectangle proyectil[MAX_PROYECTILES];
 
 	void LanzarProyectil();
+
+	EnemyManager enemyManager;
 
 };

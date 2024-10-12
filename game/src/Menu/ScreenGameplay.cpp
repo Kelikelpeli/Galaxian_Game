@@ -30,11 +30,7 @@ void ScreenGameplayState::InitScreen(void)
 	//TEXTURES
 	landscape = LoadTexture("resources/Game/Landscape.png");
 	player = LoadTexture("resources/Game/Player.png");
-	enemy1 = LoadTexture("resources/Game/Enemy1.png");
-	enemy2 = LoadTexture("resources/Game/Enemy2.png");
-	enemy3 = LoadTexture("resources/Game/Enemy3.png");
-	enemy4 = LoadTexture("resources/Game/Enemy4.png");
-
+	
 	//player
 	pjPosX = (GetScreenWidth() / 2.f);
 	pjPosY = (GetScreenHeight() - 30.f - 75.f);
@@ -147,14 +143,26 @@ void ScreenGameplayState::DrawScreen(void)
 
 }
 
+void ScreenGameplayState::InitScreen(void) {
+	// Other initializations
+	enemyManager.InitEnemies();  // Initialize enemies
+}
+
+void ScreenGameplayState::UpdateScreen(float deltaTime) {
+	// Other updates
+	enemyManager.UpdateEnemies(deltaTime);  // Update enemies
+}
+
+void ScreenGameplayState::DrawScreen(void) {
+	// Other draws
+	enemyManager.DrawEnemies();  // Draw enemies
+}
+
+
 void ScreenGameplayState::UnloadScreen(void)
 {
 	UnloadTexture(landscape);
 	UnloadTexture(player);
-	UnloadTexture(enemy1);
-	UnloadTexture(enemy2);
-	UnloadTexture(enemy3);
-	UnloadTexture(enemy4);
 }
 
 int  ScreenGameplayState::FinishScreen(void)
