@@ -12,9 +12,19 @@ public:
     void SetType(EnemyType type);
     float GetX();        
     float GetY();
+    bool IsAlive();
+    void SetAlive(bool isAlive);
+
+    void MoveEnemy(float dirX, float dirY);
+
+    Rectangle GetRectangle();
 
 private:
     Rectangle enemyRect;
     EnemyType type;
     bool isAlive;
+
+   
+public:
+
 };

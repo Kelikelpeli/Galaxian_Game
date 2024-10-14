@@ -9,7 +9,7 @@ class EnemyManager {
 public:
     EnemyManager();
     void InitEnemies();
-    void UpdateEnemies(float deltaTime);
+    void UpdateEnemies(float deltaTime, Rectangle proyectil);
     void DrawEnemies();
 
 private:
@@ -21,4 +21,8 @@ private:
 
 
     std::array<std::array<Enemy, COL>, ROW> enemies;
+
+    float enemySpeed = 0.f;
+    bool movingRight = true;
+    float landscapeW = 600.f;
 };

@@ -62,7 +62,7 @@ private:
 	bool pyLanzado[MAX_PROYECTILES];
 	Rectangle proyectil[MAX_PROYECTILES];
 
-	void LanzarProyectil();
+	void LanzarProyectil(float deltaTime);
 
 	EnemyManager enemyManager;
 

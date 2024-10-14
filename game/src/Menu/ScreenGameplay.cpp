@@ -63,7 +63,6 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 	if (IsKeyDown(KEY_D) && pjPosX + pjWidth < ((GetScreenWidth() - landscape.width) / 2) + landscape.width)
 	{
 		pjPosX += pjSpeed * deltaTime * 1.f;
-		//pyPosX = pjPosX + (pjWidth / 2) - (pyWidth / 2);
 
 	}
 
@@ -75,7 +74,7 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 	//proyecitles
 	if (IsKeyPressed(KEY_SPACE) && pyEnfriamiento <= 0)
 	{
-		LanzarProyectil();
+		LanzarProyectil(deltaTime);
 		pyEnfriamiento = 0.5f; //reinicio de espera
 	}
 
@@ -92,9 +91,8 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 	}
 
 	// Actualizar enemigos
-	enemyManager.UpdateEnemies(deltaTime);
 }
-void ScreenGameplayState::LanzarProyectil()
+void ScreenGameplayState::LanzarProyectil(float deltaTime)
 {
 	for (int i = 0; i < MAX_PROYECTILES; i++) {
 		if (!pyLanzado[i]) {
@@ -103,6 +101,8 @@ void ScreenGameplayState::LanzarProyectil()
 			pyLanzado[i] = true;  // Activa el proyectil
 			break;  // Lanza un solo proyectil
 		}
+		enemyManager.UpdateEnemies(deltaTime,proyectil[i]);
+
 	}
 }
 

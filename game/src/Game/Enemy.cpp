@@ -30,3 +30,19 @@ float Enemy::GetX() {
 float Enemy::GetY() {
     return enemyRect.y;  // Devolver la coordenada Y
 }
+void Enemy::MoveEnemy(float dirX, float dirY) {
+    enemyRect.x += dirX;
+    enemyRect.y += dirY;
+}
+bool Enemy::IsAlive() {
+    return isAlive;
+}
+void Enemy::SetAlive(bool alive) {
+   isAlive = alive;   
+
+}
+Rectangle Enemy::GetRectangle()
+{
+    return enemyRect;
+    
+}
