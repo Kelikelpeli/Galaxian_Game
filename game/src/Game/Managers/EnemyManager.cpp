@@ -65,7 +65,7 @@ void EnemyManager::UpdateEnemies(float deltaTime) {
 		}
 	}
 }
-void EnemyManager::DetectarColisiones(Rectangle proyectil)
+bool EnemyManager::DetectarColisiones(Rectangle proyectil)
 {
 	//detectar colisiones con proyectiles
 
@@ -76,10 +76,12 @@ void EnemyManager::DetectarColisiones(Rectangle proyectil)
 			if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil))
 			{
 				enemies[row][col].SetAlive(false);
+				return false; //elimina el proyectil
 				//DrawEnemies();
 			}
 		}
 	}
+	return true; //proyectil continua
 }
 void EnemyManager::DrawEnemies() {
 	for (int row = 0; row < ROW; row++) {

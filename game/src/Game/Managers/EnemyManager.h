@@ -11,7 +11,7 @@ public:
     void InitEnemies();
     void UpdateEnemies(float deltaTime);
     void DrawEnemies();
-    void DetectarColisiones(Rectangle proyectil);
+    bool DetectarColisiones(Rectangle proyectil);
 private:
     //texturas
     Texture2D enemy1;
