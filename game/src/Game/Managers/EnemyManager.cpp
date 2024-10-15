@@ -25,7 +25,7 @@ void EnemyManager::InitEnemies() {
 	landscapeW = 600.f;
 }
 
-void EnemyManager::UpdateEnemies(float deltaTime, Rectangle proyectil) {
+void EnemyManager::UpdateEnemies(float deltaTime) {
 
 
 
@@ -44,14 +44,16 @@ void EnemyManager::UpdateEnemies(float deltaTime, Rectangle proyectil) {
 				enemies[row][col].MoveEnemy(-enemySpeed * deltaTime, 0);
 
 			}
-			if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil)) 
+			/*if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil))
 			{
 				enemies[row][col].SetAlive(false);
-			}
+				DrawEnemies();
+			}*/
 		}
 	}
 
 	// Comprobar si el bloque toca los bordes y cambiar de dirección
+	
 	for (int col = 0; col < COL; col++) {
 		if (movingRight && enemies[0][col].GetX() + 40 >= (GetScreenWidth() / 2) + (landscapeW / 2)) {
 			movingRight = false;
@@ -62,15 +64,28 @@ void EnemyManager::UpdateEnemies(float deltaTime, Rectangle proyectil) {
 			break;
 		}
 	}
-
-	//detectar colisiones con proyectiles
 }
+void EnemyManager::DetectarColisiones(Rectangle proyectil)
+{
+	//detectar colisiones con proyectiles
 
+	for (int row = 0; row < ROW; row++)
+	{
+		for (int col = 0; col < COL; col++)
+		{			
+			if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil))
+			{
+				enemies[row][col].SetAlive(false);
+				//DrawEnemies();
+			}
+		}
+	}
+}
 void EnemyManager::DrawEnemies() {
 	for (int row = 0; row < ROW; row++) {
 		for (int col = 0; col < COL; col++) {
 			EnemyType type = enemies[row][col].GetType();
-
+			if (!enemies[row][col].IsAlive()) continue;
 			if (type == Enemy1 && (col == 3 || col == 6)) {
 				DrawTexture(enemy1, enemies[row][col].GetX(), enemies[row][col].GetY(), WHITE);
 			}

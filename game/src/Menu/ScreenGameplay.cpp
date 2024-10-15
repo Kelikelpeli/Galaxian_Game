@@ -87,8 +87,12 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 			if (proyectil[i].y + proyectil[i].height < 0) {
 				pyLanzado[i] = false;
 			}
+			enemyManager.DetectarColisiones(proyectil[i]);
 		}
 	}
+
+	enemyManager.UpdateEnemies(deltaTime);
+
 
 	// Actualizar enemigos
 }
@@ -99,10 +103,9 @@ void ScreenGameplayState::LanzarProyectil(float deltaTime)
 			proyectil[i].x = pjPosX + (pjWidth / 2) - (proyectil[i].width / 2);  // Centra el proyectil en el jugador
 			proyectil[i].y = pjPosY - proyectil[i].height;  // Aparece encima del jugador
 			pyLanzado[i] = true;  // Activa el proyectil
+		//	enemyManager.DetectarColisiones(proyectil[i]);
 			break;  // Lanza un solo proyectil
 		}
-		enemyManager.UpdateEnemies(deltaTime,proyectil[i]);
-
 	}
 }
 

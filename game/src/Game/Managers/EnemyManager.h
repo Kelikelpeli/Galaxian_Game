@@ -9,9 +9,9 @@ class EnemyManager {
 public:
     EnemyManager();
     void InitEnemies();
-    void UpdateEnemies(float deltaTime, Rectangle proyectil);
+    void UpdateEnemies(float deltaTime);
     void DrawEnemies();
-
+    void DetectarColisiones(Rectangle proyectil);
 private:
     //texturas
     Texture2D enemy1;

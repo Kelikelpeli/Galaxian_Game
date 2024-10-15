@@ -25,6 +25,5 @@ private:
     bool isAlive;
 
    
-public:
 
 };
