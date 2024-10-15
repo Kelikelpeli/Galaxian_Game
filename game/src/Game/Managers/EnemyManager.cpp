@@ -1,6 +1,6 @@
 #include "EnemyManager.h"
 #include "raylib.h"
-
+ 
 EnemyManager::EnemyManager() {
 	InitEnemies();
 

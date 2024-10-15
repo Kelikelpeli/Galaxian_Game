@@ -5,6 +5,7 @@
 #include "raylib.h"
 #include "Game/Managers/GameManager.h"
 #include "Game/GlobalGameDefines.h"
+#include "../Game/Proyectil.h"
 
 #include <string>
 
@@ -27,22 +28,22 @@ void ScreenGameplayState::InitScreen(void)
 	framesCounter = 0;
 	finishScreen = 0;
 
-	//TEXTURES
+	//TEXTURAS
 	landscape = LoadTexture("resources/Game/Landscape.png");
 	player = LoadTexture("resources/Game/Player.png");
-	
+
 	//player
 	pjPosX = (GetScreenWidth() / 2.f);
 	pjPosY = (GetScreenHeight() - 30.f - 75.f);
 	pjSpeed = 120.f;
-	pjWidth = player.width * 1.f;		//anchura, se comenta para rec rojo
-	pjHeight = player.height * 1.f;	//altura, se comenta para rec rojo
+	//pjWidth = player.width * 1.f;		//anchura, se comenta para rec rojo
+	//pjHeight = player.height * 1.f;	//altura, se comenta para rec rojo
 
-	//proyectiles
+	//proyectiles de player
 	for (int i = 0; i < MAX_PROYECTILES; i++)
 	{
-		proyectil[i] = { 0, 0, 3.f, 13.f };
-		pyLanzado[i] = false;
+		pjProyectiles[i].InitProyectil(0, 0, 3.f, 13.f, 250.f, true, 1);
+		pjProyectiles[i].SetLanzado(false);
 	}
 
 	pyEnfriamiento = 0;
@@ -71,42 +72,68 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 		pjPosX += pjSpeed * deltaTime * -1.f;
 
 	}
-	//proyecitles
+	//proyecitles del player
+	for (int i = 0; i < MAX_PROYECTILES; i++)
+	{
+		if (!pjProyectiles[i].IsLanzado() && pyEnfriamiento <= 0) {
+			pjProyectiles[i].Reinicio();
+			pjProyectiles[i].DrawProyectil();  // Se dibuja la bala sobre el jugador
+		}
+
+		pjProyectiles[i].UpdateProyectil(deltaTime);
+
+		//colisiones
+		if (pjProyectiles[i].IsLanzado() && !enemyManager.DetectarColisiones(pjProyectiles[i].GetRectangle()))
+		{
+			//pjProyectiles[i].InitProyectil(0, 0, 3.f, 13.f, 250.f, false,1);
+			pjProyectiles[i].Deactivate();
+
+		}
+		
+	}
+
+	
+
+
+	//lanzar proyectil
+
 	if (IsKeyPressed(KEY_SPACE) && pyEnfriamiento <= 0)
 	{
 		LanzarProyectil(deltaTime);
 		pyEnfriamiento = 0.5f; //reinicio de espera
+		//DrawScreen();
 	}
 
-	for (int i = 0; i < MAX_PROYECTILES; i++)
-	{
-		if (pyLanzado[i]) {
-			proyectil[i].y -= pySpeed * deltaTime; // Movimiento hacia arriba
+	//for (int i = 0; i < MAX_PROYECTILES; i++)
+	//{
+	//	if (pyLanzado[i]) {
+	//		proyectil[i].y -= pySpeed * deltaTime; // Movimiento hacia arriba
 
-			// Si el proyectil sale de la pantalla, se destruye
-			if (proyectil[i].y + proyectil[i].height < 0) {
-				pyLanzado[i] = false;
-			}
-			if (!enemyManager.DetectarColisiones(proyectil[i])) {
-				pyLanzado[i] = false;
-			}
-			DrawScreen();
-		}
-	}
+	//		// Si el proyectil sale de la pantalla, se destruye
+	//		if (proyectil[i].y + proyectil[i].height < 0) {
+	//			pyLanzado[i] = false;
+	//		}
+	//		if (!enemyManager.DetectarColisiones(proyectil[i])) {
+	//			pyLanzado[i] = false;
+	//		}
+	//		DrawScreen();
+	//	}
+	//}
 
-	enemyManager.UpdateEnemies(deltaTime);
+	//enemyManager.UpdateEnemies(deltaTime);
 
 
 	// Actualizar enemigos
 }
 void ScreenGameplayState::LanzarProyectil(float deltaTime)
 {
-	for (int i = 0; i < MAX_PROYECTILES; i++) {
-		if (!pyLanzado[i]) {
-			proyectil[i].x = pjPosX + (pjWidth / 2) - (proyectil[i].width / 2);  // Centra el proyectil en el jugador
-			proyectil[i].y = pjPosY - proyectil[i].height;  // Aparece encima del jugador
-			pyLanzado[i] = true;  // Activa el proyectil
-			break;  // Lanza un solo proyectil
+	for (int i = 0; i < MAX_PROYECTILES; i++)
+	{
+		if (!pjProyectiles[i].IsLanzado())
+		{
+			pjProyectiles[i].Launcher(pjPosX + (pjWidth / 2), pjPosY);
+			pjProyectiles[i].SetLanzado(true);
+			break;
 		}
 	}
 }
@@ -122,22 +149,30 @@ void ScreenGameplayState::DrawScreen(void)
 	//DrawRectangle(posXPj, posYPj, pjWidth, pjHeight, RED);
 
 	//Proyectiles
-	for (int i = 0; i < MAX_PROYECTILES; i++) 
+
+	for (int i = 0; i < MAX_PROYECTILES; i++)
 	{
-
-		if (pyLanzado[i]) {
-			DrawRectangleRec(proyectil[i], YELLOW);
-
-		}
-		else if (!pyLanzado[i] && pyEnfriamiento <=0 )
-		{
-			proyectil[i].x = pjPosX + (pjWidth / 2) - (proyectil[i].width / 2);  // Centra el proyectil en el jugador
-			proyectil[i].y = pjPosY - proyectil[i].height;
-			DrawRectangleRec(proyectil[i], YELLOW);
-		}
-		
-
+		pjProyectiles[i].DrawProyectil();
 	}
+	//for (int i = 0; i < MAX_PROYECTILES; i++) 
+	//{
+
+	//	if (pyLanzado[i]) {
+	//		DrawRectangleRec(proyectil[i], YELLOW);
+
+	//	}
+	//	else if (!pyLanzado[i] && pyEnfriamiento <=0 )
+	//	{
+	//		proyectil[i].x = pjPosX + (pjWidth / 2) - (proyectil[i].width / 2);  // Centra el proyectil en el jugador
+	//		proyectil[i].y = pjPosY - proyectil[i].height;
+	//		DrawRectangleRec(proyectil[i], YELLOW);
+	//	}
+	//	
+
+	//}
+
+	// Dibujar enemigos
+	enemyManager.DrawEnemies();
 
 
 	GameManager& GameInst = GameManager::GetGameManager();
@@ -152,11 +187,12 @@ void ScreenGameplayState::DrawScreen(void)
 	DrawTextEx(font, "SCORE:", Vector2{ posx, 300.f }, 25, 3, WHITE);
 	DrawText(to_string(GameInst.GetScore()).c_str(), 440.f, 100.f, 25, WHITE);
 
-	// Dibujar enemigos
-	enemyManager.DrawEnemies();
+
 }
-
-
+//void ScreenGameplayState::DetectarColisiones() {
+//
+//
+//}
 
 void ScreenGameplayState::UnloadScreen(void)
 {

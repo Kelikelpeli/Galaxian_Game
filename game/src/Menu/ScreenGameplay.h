@@ -2,8 +2,9 @@
 #include "StateMachineMngr.h"
 #include "raylib.h"
 #include "screen.h"
-//#include "EnemyManager.h"
+#include "Proyectil.h"
 #include "../Game/Managers/EnemyManager.h"
+
 
 #define MAX_PROYECTILES 4
 
@@ -25,9 +26,8 @@ public:
 
 	static ScreenGameplayState& getInstance();
 
-	void InitEnemies();
-	void UpdateEnemies(float deltaTime);
-	void DrawEnemies();
+
+	//void ScreenGameplayState::DetectarColisiones();
 private:
 	ScreenGameplayState();
 	ScreenGameplayState(const ScreenGameplayState& other);
@@ -56,11 +56,8 @@ private:
 	float pjHeight = 30.f;
 
 	//proyectiles
-	
-	float pySpeed = 250.f;
+	Proyectil pjProyectiles[MAX_PROYECTILES];
 	float pyEnfriamiento = 0.f;  //contador para esperar 0.5 segundos entre proyectiles
-	bool pyLanzado[MAX_PROYECTILES];
-	Rectangle proyectil[MAX_PROYECTILES];
 
 	void LanzarProyectil(float deltaTime);
 

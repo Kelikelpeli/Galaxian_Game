@@ -1,5 +1,7 @@
 #pragma once
 #include "raylib.h"
+#define MAX_PROYECTILES 4
+
 
 enum EnemyType { Empty, Enemy1, Enemy2, Enemy3, Enemy4 };
 
@@ -25,5 +27,8 @@ private:
     bool isAlive;
 
    
-
+    float pySpeed = 250.f;
+    float pyEnfriamiento = 0.f;  //contador para esperar 0.5 segundos entre proyectiles
+    bool pyLanzado[MAX_PROYECTILES];
+    Rectangle proyectil[MAX_PROYECTILES];
 };

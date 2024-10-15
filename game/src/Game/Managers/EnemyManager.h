@@ -5,6 +5,7 @@
 #define ROW 6
 #define COL 10
 
+
 class EnemyManager {
 public:
     EnemyManager();
