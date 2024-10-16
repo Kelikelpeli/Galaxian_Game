@@ -34,5 +34,6 @@ private:
     //proyectiles
     Proyectil pjProyectiles[MAX_PROYECTILES];
     int randomNum = 0;
+    Vector2 randomEnemy;
 
 };

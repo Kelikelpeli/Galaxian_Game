@@ -24,11 +24,17 @@ void EnemyManager::InitEnemies() {
 	enemySpeed = 50.0f;
 	movingRight = true;
 	landscapeW = 600.f;
+
+	//proyectiles de enemigos
+	for (int i = 0; i < MAX_PROYECTILES; i++)
+	{
+		pjProyectiles[i].InitProyectil(0,0,3.f,13.f, 100.f, false, -1);
+		pjProyectiles[i].SetLanzado(false);
+	}
+	randomNum = GetRandomValue(0, 6);
 }
 
 void EnemyManager::UpdateEnemies(float deltaTime) {
-
-
 
 	for (int row = 0; row < ROW; row++) 
 	{
@@ -37,19 +43,12 @@ void EnemyManager::UpdateEnemies(float deltaTime) {
 			if (movingRight) 
 			{
 				enemies[row][col].MoveEnemy(enemySpeed * deltaTime, 0);
-
 			}
 			else 
 			{
-
 				enemies[row][col].MoveEnemy(-enemySpeed * deltaTime, 0);
-
 			}
-			/*if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil))
-			{
-				enemies[row][col].SetAlive(false);
-				DrawEnemies();
-			}*/
+			
 		}
 	}
 
@@ -63,6 +62,31 @@ void EnemyManager::UpdateEnemies(float deltaTime) {
 		else if (!movingRight && enemies[0][col].GetX() <= (GetScreenWidth() / 2) - (landscapeW / 2)) {
 			movingRight = true;
 			break;
+		}
+	}
+
+	//proyectiles
+
+	if (randomNum > 0) {
+		randomNum = 0;  // Reiniciar el contador
+		int randomRow = GetRandomValue(0, ROW - 1);
+		int randomCol = GetRandomValue(0, COL - 1);
+
+		// Asegurarse de que el enemigo seleccionado está vivo antes de disparar
+		if (enemies[randomRow][randomCol].IsAlive()) {
+			float posx = enemies[randomRow][randomCol].GetX() + (enemies[randomRow][randomCol].GetRectangle().width / 2) - 1.5f;
+			float posy = enemies[randomRow][randomCol].GetY() + enemies[randomRow][randomCol].GetRectangle().height;
+
+			LanzarProyectiles(posx, posy);
+		}
+		// Reiniciar aleatoriedad para el siguiente disparo
+		randomNum = GetRandomValue(0, 1);
+	}
+
+	// Actualizar los proyectiles de los enemigos
+	for (int i = 0; i < MAX_PROYECTILES; i++) {
+		if (pjProyectiles[i].IsLanzado()) {
+			pjProyectiles[i].UpdateProyectil(deltaTime);
 		}
 	}
 }
@@ -103,9 +127,27 @@ void EnemyManager::DrawEnemies() {
 			}
 		}
 	}
+
+	//proyectiles
+	for (int i = 0; i < MAX_PROYECTILES; i++)
+	{
+		if (pjProyectiles[i].IsLanzado()) {
+			pjProyectiles[i].DrawProyectil();
+		}
+	}
 }
 
 void EnemyManager::LanzarProyectiles(float posx, float posy)
 {
+	for (int i = 0; i < MAX_PROYECTILES; i++)
+	{
+		if (!pjProyectiles[i].IsLanzado())
+		{
+			pjProyectiles[i].Launcher(posx, posy);  
+			pjProyectiles[i].SetLanzado(true);
+			pjProyectiles[i].SetLanzado(true);
+			break;
+		}
+	}
 
 }
