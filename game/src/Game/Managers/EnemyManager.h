@@ -1,9 +1,12 @@
 #pragma once
 //#include "Enemy.h"
 #include "Game/Enemy.h"
+#include "Proyectil.h"
 #include <array>
 #define ROW 6
 #define COL 10
+#define MAX_PROYECTILES 4
+
 
 
 class EnemyManager {
@@ -13,6 +16,7 @@ public:
     void UpdateEnemies(float deltaTime);
     void DrawEnemies();
     bool DetectarColisiones(Rectangle proyectil);
+    void LanzarProyectiles(float posx,float posy);
 private:
     //texturas
     Texture2D enemy1;
@@ -26,4 +30,9 @@ private:
     float enemySpeed = 0.f;
     bool movingRight = true;
     float landscapeW = 600.f;
+
+    //proyectiles
+    Proyectil pjProyectiles[MAX_PROYECTILES];
+    int randomNum = 0;
+
 };

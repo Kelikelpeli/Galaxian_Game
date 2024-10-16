@@ -42,9 +42,10 @@ void ScreenGameplayState::InitScreen(void)
 	//proyectiles de player
 	for (int i = 0; i < MAX_PROYECTILES; i++)
 	{
-		pjProyectiles[i].InitProyectil(0, 0, 3.f, 13.f, 250.f, true, 1);
+		pjProyectiles[i].InitProyectil(pjPosX + (player.width / 2) - 1.5f, pjPosY - 13.f, 3.f, 13.f, 100.f, false, 1);
 		pjProyectiles[i].SetLanzado(false);
 	}
+	pjProyectiles[0].SetActive(true);
 
 	pyEnfriamiento = 0;
 
@@ -72,58 +73,59 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 		pjPosX += pjSpeed * deltaTime * -1.f;
 
 	}
+	
+
 	//proyecitles del player
+
+		//lanzar proyectil
+
+	if (IsKeyPressed(KEY_SPACE) && pyEnfriamiento <= 0)
+	{
+		LanzarProyectil(deltaTime);
+		pyEnfriamiento = 0.5f; //reinicio de espera
+	}
+
 	for (int i = 0; i < MAX_PROYECTILES; i++)
 	{
-		if (!pjProyectiles[i].IsLanzado() && pyEnfriamiento <= 0) {
-			pjProyectiles[i].Reinicio();
-			pjProyectiles[i].DrawProyectil();  // Se dibuja la bala sobre el jugador
-		}
-
 		pjProyectiles[i].UpdateProyectil(deltaTime);
 
-		//colisiones
+		if (!pjProyectiles[i].IsLanzado() && pyEnfriamiento<=0)
+		{
+			if (i == 0) 
+			{
+				pjProyectiles[i].Launcher(pjPosX + (player.width / 2) - (pjProyectiles[i].GetRectangle().width / 2), pjPosY - pjProyectiles[i].GetRectangle().height);
+
+			}
+			else if (pjProyectiles[i-1].IsLanzado())
+			{
+				pjProyectiles[i].Launcher(pjPosX + (player.width / 2) - (pjProyectiles[i].GetRectangle().width / 2), pjPosY - pjProyectiles[i].GetRectangle().height);
+
+			}
+			pjProyectiles[i].Launcher(pjPosX + (player.width / 2) - (pjProyectiles[i].GetRectangle().width / 2), pjPosY - pjProyectiles[i].GetRectangle().height);
+			break;
+		}
+		pjProyectiles[i].UpdateProyectil(deltaTime);
+
+	
+			//colisiones
 		if (pjProyectiles[i].IsLanzado() && !enemyManager.DetectarColisiones(pjProyectiles[i].GetRectangle()))
 		{
 			//pjProyectiles[i].InitProyectil(0, 0, 3.f, 13.f, 250.f, false,1);
 			pjProyectiles[i].Deactivate();
 
 		}
-		
-	}
 
+
+	}
 	
-
-
-	//lanzar proyectil
-
-	if (IsKeyPressed(KEY_SPACE) && pyEnfriamiento <= 0)
+	for (int i = 0; i < MAX_PROYECTILES; i++)
 	{
-		LanzarProyectil(deltaTime);
-		pyEnfriamiento = 0.5f; //reinicio de espera
-		//DrawScreen();
+		pjProyectiles[i].UpdateProyectil(deltaTime);
 	}
-
-	//for (int i = 0; i < MAX_PROYECTILES; i++)
-	//{
-	//	if (pyLanzado[i]) {
-	//		proyectil[i].y -= pySpeed * deltaTime; // Movimiento hacia arriba
-
-	//		// Si el proyectil sale de la pantalla, se destruye
-	//		if (proyectil[i].y + proyectil[i].height < 0) {
-	//			pyLanzado[i] = false;
-	//		}
-	//		if (!enemyManager.DetectarColisiones(proyectil[i])) {
-	//			pyLanzado[i] = false;
-	//		}
-	//		DrawScreen();
-	//	}
-	//}
-
-	//enemyManager.UpdateEnemies(deltaTime);
-
 
 	// Actualizar enemigos
+
+	enemyManager.UpdateEnemies(deltaTime);
 }
 void ScreenGameplayState::LanzarProyectil(float deltaTime)
 {
@@ -131,7 +133,8 @@ void ScreenGameplayState::LanzarProyectil(float deltaTime)
 	{
 		if (!pjProyectiles[i].IsLanzado())
 		{
-			pjProyectiles[i].Launcher(pjPosX + (pjWidth / 2), pjPosY);
+			//pjProyectiles[i].Launcher((pjProyectiles[i].GetRectangle().width / 2), pjPosY - pjProyectiles[i].GetRectangle().height);
+			//pjProyectiles[i].Launcher(pjPosX + (player.width / 2) - (pjProyectiles[i].GetRectangle().width / 2), pjPosY - pjProyectiles[i].GetRectangle().height);
 			pjProyectiles[i].SetLanzado(true);
 			break;
 		}
@@ -152,6 +155,7 @@ void ScreenGameplayState::DrawScreen(void)
 
 	for (int i = 0; i < MAX_PROYECTILES; i++)
 	{
+		
 		pjProyectiles[i].DrawProyectil();
 	}
 	//for (int i = 0; i < MAX_PROYECTILES; i++) 
@@ -183,9 +187,11 @@ void ScreenGameplayState::DrawScreen(void)
 
 	//DrawTextEX(font,"SCORE:", 300.f, 100.f, 25, WHITE);
 	float textWidth = MeasureTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", 25, 3).x;
-	float posx = (GetScreenWidth() / 2.f) - (textWidth / 2.f);
-	DrawTextEx(font, "SCORE:", Vector2{ posx, 300.f }, 25, 3, WHITE);
+	float posx = (GetScreenWidth()-1000) - (textWidth / 2.f);
+	DrawTextEx(font, "SCORE:", Vector2{ posx, 100.f }, 25, 3, WHITE);
 	DrawText(to_string(GameInst.GetScore()).c_str(), 440.f, 100.f, 25, WHITE);
+
+
 
 
 }

@@ -6,14 +6,16 @@ void Proyectil::InitProyectil(float x, float y, float width, float height, float
 	this->active = active;
 	this->direccionY = direccionY;
 	lanzado = false;
+	//DrawProyectil();
 }
 void Proyectil::UpdateProyectil(float deltaTime) {
-	if (active && lanzado) {
+	if ( lanzado) {
 		proyectilRect.y -= speed * direccionY * deltaTime; // Move upwards
 
 		// Deactivate projectile if it goes out of bounds
 		if (proyectilRect.y + proyectilRect.height < 0 || proyectilRect.y > GetScreenHeight()) {
 			active = false;
+			lanzado = false;
 		}
 	}
 }
@@ -24,7 +26,8 @@ void Proyectil::DrawProyectil() {
 }
 
 void Proyectil::Launcher(float startX, float startY) {
-	proyectilRect.x = startX - proyectilRect.width / 2;
+
+	proyectilRect.x = startX - (proyectilRect.width / 2);
 	proyectilRect.y = startY;
 	active = true;
 }

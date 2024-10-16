@@ -1,4 +1,5 @@
 #include "EnemyManager.h"
+#include "Proyectil.h"
 #include "raylib.h"
  
 EnemyManager::EnemyManager() {
@@ -102,4 +103,9 @@ void EnemyManager::DrawEnemies() {
 			}
 		}
 	}
+}
+
+void EnemyManager::LanzarProyectiles(float posx, float posy)
+{
+
 }
