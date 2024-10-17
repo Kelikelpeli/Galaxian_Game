@@ -35,7 +35,6 @@ void EnemyManager::InitEnemies() {
 }
 
 void EnemyManager::UpdateEnemies(float deltaTime) {
-
 	for (int row = 0; row < ROW; row++) 
 	{
 		for (int col = 0; col < COL; col++)
@@ -66,9 +65,11 @@ void EnemyManager::UpdateEnemies(float deltaTime) {
 	}
 
 	//proyectiles
+	randomNum--;
 
-	if (randomNum > 0) {
-		randomNum = 0;  // Reiniciar el contador
+	if (randomNum > 80) {
+		randomNum = GetRandomValue(30,110);  // Reiniciar el contador
+
 		int randomRow = GetRandomValue(0, ROW - 1);
 		int randomCol = GetRandomValue(0, COL - 1);
 
@@ -80,7 +81,10 @@ void EnemyManager::UpdateEnemies(float deltaTime) {
 			LanzarProyectiles(posx, posy);
 		}
 		// Reiniciar aleatoriedad para el siguiente disparo
-		randomNum = GetRandomValue(0, 1);
+	}
+	else if(GetRandomValue(0,10)>9) {
+		randomNum = GetRandomValue(30, 110);  // Reiniciar el contador
+
 	}
 
 	// Actualizar los proyectiles de los enemigos
