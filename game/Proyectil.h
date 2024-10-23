@@ -7,7 +7,7 @@ class Proyectil {
 public:
     void InitProyectil(float x, float y, float width, float height, float speed, bool active, float direccionY);
     void UpdateProyectil(float deltaTime);
-    void DrawProyectil();
+    void DrawProyectil() const;
     void Launcher(float startX, float startY);
     bool IsActive();
     void SetActive(bool active);

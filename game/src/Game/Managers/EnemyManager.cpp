@@ -1,7 +1,7 @@
 #include "EnemyManager.h"
 #include "Proyectil.h"
 #include "raylib.h"
- 
+
 EnemyManager::EnemyManager() {
 	InitEnemies();
 
@@ -28,31 +28,31 @@ void EnemyManager::InitEnemies() {
 	//proyectiles de enemigos
 	for (int i = 0; i < MAX_PROYECTILES; i++)
 	{
-		pjProyectiles[i].InitProyectil(0,0,3.f,13.f, 100.f, false, -1);
+		pjProyectiles[i].InitProyectil(0, 0, 3.f, 13.f, 100.f, false, -1);
 		pjProyectiles[i].SetLanzado(false);
 	}
 	randomNum = GetRandomValue(0, 6);
 }
 
 void EnemyManager::UpdateEnemies(float deltaTime) {
-	for (int row = 0; row < ROW; row++) 
+	for (int row = 0; row < ROW; row++)
 	{
 		for (int col = 0; col < COL; col++)
 		{
-			if (movingRight) 
+			if (movingRight)
 			{
 				enemies[row][col].MoveEnemy(enemySpeed * deltaTime, 0);
 			}
-			else 
+			else
 			{
 				enemies[row][col].MoveEnemy(-enemySpeed * deltaTime, 0);
 			}
-			
+
 		}
 	}
 
 	// Comprobar si el bloque toca los bordes y cambiar de dirección
-	
+
 	for (int col = 0; col < COL; col++) {
 		if (movingRight && enemies[0][col].GetX() + 40 >= (GetScreenWidth() / 2) + (landscapeW / 2)) {
 			movingRight = false;
@@ -68,7 +68,7 @@ void EnemyManager::UpdateEnemies(float deltaTime) {
 	randomNum--;
 
 	if (randomNum > 80) {
-		randomNum = GetRandomValue(30,110);  // Reiniciar el contador
+		randomNum = GetRandomValue(30, 110);  // Reiniciar el contador
 
 		int randomRow = GetRandomValue(0, ROW - 1);
 		int randomCol = GetRandomValue(0, COL - 1);
@@ -82,7 +82,7 @@ void EnemyManager::UpdateEnemies(float deltaTime) {
 		}
 		// Reiniciar aleatoriedad para el siguiente disparo
 	}
-	else if(GetRandomValue(0,10)>9) {
+	else if (GetRandomValue(0, 10) > 9) {
 		randomNum = GetRandomValue(30, 110);  // Reiniciar el contador
 
 	}
@@ -101,7 +101,7 @@ bool EnemyManager::DetectarColisiones(Rectangle proyectil)
 	for (int row = 0; row < ROW; row++)
 	{
 		for (int col = 0; col < COL; col++)
-		{			
+		{
 			if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil))
 			{
 				enemies[row][col].SetAlive(false);
@@ -147,11 +147,34 @@ void EnemyManager::LanzarProyectiles(float posx, float posy)
 	{
 		if (!pjProyectiles[i].IsLanzado())
 		{
-			pjProyectiles[i].Launcher(posx, posy);  
-			pjProyectiles[i].SetLanzado(true);
+			pjProyectiles[i].Launcher(posx, posy);
 			pjProyectiles[i].SetLanzado(true);
 			break;
 		}
 	}
 
+}
+bool EnemyManager::CheckCollisionWithProjectile(Proyectil proyectil) {
+	// Implementar lógica para verificar si un proyectil ha colisionado con un enemigo
+	for (int row = 0; row < ROW; row++) {
+		for (int col = 0; col < COL; col++) {
+			if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil.GetRectangle())) {
+				enemies[row][col].SetAlive(false);
+				return true;
+			}
+		}
+	}
+	return false; // Esto es un ejemplo, ajusta según tu lógica de colisión
+}
+
+bool EnemyManager::CheckCollisionWithPlayer(Vector2 playerPos, Vector2 playerSize) {
+	// Implementar lógica para verificar si el jugador ha sido golpeado
+	Rectangle playerRect = { playerPos.x, playerPos.y, playerSize.x, playerSize.y };
+	for (auto& proyectil : pjProyectiles) {
+		if (proyectil.IsLanzado() && CheckCollisionRecs(playerRect, proyectil.GetRectangle())) {
+			proyectil.Deactivate();
+			return true;
+		}
+	}
+	return false; // Esto es un ejemplo, ajusta según tu lógica de colisión
 }

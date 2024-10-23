@@ -17,6 +17,8 @@ public:
     void DrawEnemies();
     bool DetectarColisiones(Rectangle proyectil);
     void LanzarProyectiles(float posx,float posy);
+    bool CheckCollisionWithProjectile(Proyectil proyectil);
+    bool CheckCollisionWithPlayer(Vector2 playerPos, Vector2 playerSize);
 private:
     //texturas
     Texture2D enemy1;

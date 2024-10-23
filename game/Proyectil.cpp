@@ -19,7 +19,7 @@ void Proyectil::UpdateProyectil(float deltaTime) {
 		}
 	}
 }
-void Proyectil::DrawProyectil() {
+void Proyectil::DrawProyectil() const {
 	if (active) {
 		DrawRectangleRec(proyectilRect, YELLOW);
 	}
