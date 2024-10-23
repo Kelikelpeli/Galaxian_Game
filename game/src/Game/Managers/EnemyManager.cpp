@@ -139,6 +139,23 @@ void EnemyManager::DrawEnemies() {
 			pjProyectiles[i].DrawProyectil();
 		}
 	}
+
+	Font font = GetFontDefault(); // Puedes cargar un font personalizado si prefieres
+	float rightSectionX = 100; //MeasureTextEx(GameInst.GetArcadeFont(), "SCORE ADVANCE TABLE", 20, ).x
+	float textY = 75; // Coordenada Y inicial para el texto
+
+	DrawTextEx(font, "SCORE ADVANCE TABLE", Vector2{ 50, textY }, 20, 1, WHITE);
+	DrawTextEx(font, "CONVOY", Vector2{ 125, textY + 30 }, 20, 1, BLUE);
+
+	Texture2D enemyTextures[4] = { enemy1, enemy2, enemy3, enemy4 };
+	int scores[4] = { 60, 50, 40, 30 };
+
+	float centerX = 200;
+	for (int i = 0; i < 4; i++) {
+		DrawTextureEx(enemyTextures[i], Vector2{ 125, 130.f + (i * 40) }, 0.0f, 1.0f, WHITE);
+		DrawText(TextFormat("%d", scores[i]), 165, 140 + (i * 40), 20, BLUE);
+	}
+
 }
 
 void EnemyManager::LanzarProyectiles(float posx, float posy)

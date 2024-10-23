@@ -89,10 +89,20 @@ void ScreenGameplayState::DrawScreen(void)
 	Font font = GameInst.GetArcadeFont();
 
 	//DrawTextEX(font,"SCORE:", 300.f, 100.f, 25, WHITE);
+	
 	float textWidth = MeasureTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", 25, 3).x;
 	float posx = (275) - (textWidth / 2.f);
-	DrawTextEx(font, "SCORE:", Vector2{ posx, 100.f }, 25, 3, WHITE);
+	//DrawTextEx(font, "SCORE:", Vector2{ posx, 100.f }, 25, 3, WHITE);
 	DrawText(to_string(GameInst.GetScore()).c_str(), 440.f, 100.f, 25, WHITE);
+	enemyManager;
+
+	////Font font = GetFontDefault(); // Puedes cargar un font personalizado si prefieres
+	//float rightSectionX = GetScreenWidth() - 200; // Coordenada X para el texto en el lado derecho
+	//float textY = 100; // Coordenada Y inicial para el texto
+
+	//DrawTextEx(font, "SCORE ADVANCE TABLE", Vector2{ rightSectionX - 50, textY }, 20, 1, WHITE);
+	//DrawTextEx(font, "CONVOY", Vector2{ rightSectionX, textY + 30 }, 20, 1, BLUE);
+
 }
 
 
