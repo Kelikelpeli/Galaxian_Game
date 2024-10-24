@@ -2,7 +2,6 @@
 #include "StateMachineMngr.h"
 #include "raylib.h"
 #include "screen.h"
-//#include "Proyectil.h"
 #include "../Game/Player.h"
 #include "../Game/Managers/EnemyManager.h"
 

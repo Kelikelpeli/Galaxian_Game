@@ -15,6 +15,8 @@ ScreenEndingState& ScreenEndingState::getInstance()
 
 void ScreenEndingState::InitScreen(void)
 {
+	GameManager GameInst = GameManager::GetGameManager();
+	GameInst.SetScore(0);
 	framesCounter = 0;
 	finishScreen = 0;
 
@@ -37,7 +39,7 @@ void ScreenEndingState::UpdateScreen(float deltaTime)
 {
 	framesCounter++;
 
-	if (GameManager::GameManager().GetGameResult()==false)
+	if (!GameManager::GameManager().GetGameResult())
 	{
 
 		//animacion Game Over
@@ -57,7 +59,7 @@ void ScreenEndingState::UpdateScreen(float deltaTime)
 		}
 	}
 	//animacion you win
-	if (GameManager::GameManager().GetGameResult()) 
+	else if (GameManager::GameManager().GetGameResult()) 
 	{
 		if (scalingUp)
 		{

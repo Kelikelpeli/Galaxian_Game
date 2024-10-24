@@ -32,7 +32,6 @@ void ScreenGameplayState::InitScreen(void)
 
 	//TEXTURAS
 	landscape = LoadTexture("resources/Game/Landscape.png");
-	//player = LoadTexture("resources/Game/Player.png");
 
 	 // Inicializar player
 	Vector2 screenSize = { (float)GetScreenWidth(), (float)GetScreenHeight() };
@@ -51,13 +50,19 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 	// GAMEPLAY
 	player.Update(deltaTime, landscape);
 
+	GameManager& GameInst = GameManager::GetGameManager();
+	if (GameInst.GetScore() >= 1640) {
+		GameInst.SetGameResult(true);
+		finishScreen = 4;
+	}
+
 	// Actualizar enemigos
 	enemyManager.UpdateEnemies(deltaTime);
 
 	// Detectar colisiones entre los proyectiles del jugador y los enemigos
 	for (int i = 0; i < MAX_PROYECTILES; i++) {
 		if (player.GetProyectil(i).IsLanzado()) {
-			enemyManager.CheckCollisionWithProjectile(player.GetProyectil(i));
+			enemyManager.CheckCollisionWithProjectile(player.GetProyectil(i));			
 		}
 	}
 
@@ -65,9 +70,12 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 	if (enemyManager.CheckCollisionWithPlayer(player.GetPosition(), player.GetSize())) {
 		player.DecreaseLife();
 		if (player.GetLives() <= 0) {
+			GameManager& GameInst = GameManager::GetGameManager();
+			GameInst.SetGameResult(false);
 			finishScreen = 4; // END SCREEN
 		}
 	}
+	
 }
 
 void ScreenGameplayState::DrawScreen(void)
@@ -88,28 +96,19 @@ void ScreenGameplayState::DrawScreen(void)
 
 	Font font = GameInst.GetArcadeFont();
 
-	//DrawTextEX(font,"SCORE:", 300.f, 100.f, 25, WHITE);
 	
 	float textWidth = MeasureTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", 25, 3).x;
 	float posx = (275) - (textWidth / 2.f);
-	//DrawTextEx(font, "SCORE:", Vector2{ posx, 100.f }, 25, 3, WHITE);
-	DrawText(to_string(GameInst.GetScore()).c_str(), 440.f, 100.f, 25, WHITE);
+	DrawTextEx(font, "SCORE:", Vector2{ posx, 100.f }, 25, 3, WHITE);
+	DrawText(to_string(GameInst.GetScore()).c_str(), posx+130, 100.f, 25, WHITE);
+	
 	enemyManager;
-
-	////Font font = GetFontDefault(); // Puedes cargar un font personalizado si prefieres
-	//float rightSectionX = GetScreenWidth() - 200; // Coordenada X para el texto en el lado derecho
-	//float textY = 100; // Coordenada Y inicial para el texto
-
-	//DrawTextEx(font, "SCORE ADVANCE TABLE", Vector2{ rightSectionX - 50, textY }, 20, 1, WHITE);
-	//DrawTextEx(font, "CONVOY", Vector2{ rightSectionX, textY + 30 }, 20, 1, BLUE);
-
 }
 
 
 void ScreenGameplayState::UnloadScreen(void)
 {
 	UnloadTexture(landscape);
-	//UnloadTexture(player);
 	player.Unload();
 }
 

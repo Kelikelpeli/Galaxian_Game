@@ -1,13 +1,14 @@
 #include "EnemyManager.h"
 #include "Proyectil.h"
 #include "raylib.h"
+#include "GameManager.h"
 
 EnemyManager::EnemyManager() {
 	InitEnemies();
-
 }
 
 void EnemyManager::InitEnemies() {
+	GameManager& GameInst = GameManager::GetGameManager();
 	for (int row = 0; row < ROW; row++) {
 		for (int col = 0; col < COL; col++) {
 			enemies[row][col].InitEnemy(((GetScreenWidth() - COL * 40) / 2) + col * 40, row * 40 + 100);  // Posicionar enemigos
@@ -94,24 +95,7 @@ void EnemyManager::UpdateEnemies(float deltaTime) {
 		}
 	}
 }
-bool EnemyManager::DetectarColisiones(Rectangle proyectil)
-{
-	//detectar colisiones con proyectiles
 
-	for (int row = 0; row < ROW; row++)
-	{
-		for (int col = 0; col < COL; col++)
-		{
-			if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil))
-			{
-				enemies[row][col].SetAlive(false);
-				return false; //elimina el proyectil
-				//DrawEnemies();
-			}
-		}
-	}
-	return true; //proyectil continua
-}
 void EnemyManager::DrawEnemies() {
 	for (int row = 0; row < ROW; row++) {
 		for (int col = 0; col < COL; col++) {
@@ -140,20 +124,16 @@ void EnemyManager::DrawEnemies() {
 		}
 	}
 
-	Font font = GetFontDefault(); // Puedes cargar un font personalizado si prefieres
-	float rightSectionX = 100; //MeasureTextEx(GameInst.GetArcadeFont(), "SCORE ADVANCE TABLE", 20, ).x
-	float textY = 75; // Coordenada Y inicial para el texto
-
-	DrawTextEx(font, "SCORE ADVANCE TABLE", Vector2{ 50, textY }, 20, 1, WHITE);
-	DrawTextEx(font, "CONVOY", Vector2{ 125, textY + 30 }, 20, 1, BLUE);
+	DrawTextEx(GetFontDefault(), "SCORE ADVANCE TABLE", Vector2{ 50, 300 }, 20, 1, WHITE);
+	DrawTextEx(GetFontDefault(), "CONVOY", Vector2{ 125, 300 + 30 }, 20, 1, BLUE);
 
 	Texture2D enemyTextures[4] = { enemy1, enemy2, enemy3, enemy4 };
 	int scores[4] = { 60, 50, 40, 30 };
 
 	float centerX = 200;
 	for (int i = 0; i < 4; i++) {
-		DrawTextureEx(enemyTextures[i], Vector2{ 125, 130.f + (i * 40) }, 0.0f, 1.0f, WHITE);
-		DrawText(TextFormat("%d", scores[i]), 165, 140 + (i * 40), 20, BLUE);
+		DrawTextureEx(enemyTextures[i], Vector2{ 125, 350.f + (i * 40) }, 0.0f, 1.0f, WHITE);
+		DrawText(TextFormat("%d", scores[i]), 165, 360.f + (i * 40), 20, BLUE);
 	}
 
 }
@@ -171,17 +151,45 @@ void EnemyManager::LanzarProyectiles(float posx, float posy)
 	}
 
 }
-bool EnemyManager::CheckCollisionWithProjectile(Proyectil proyectil) {
+int EnemyManager::GetScore() {
+	return score;
+}
+void EnemyManager::SetScore(int row, int col) {
+	int plus;
+	switch (enemies[row][col].GetType()) {
+	case Enemy1:
+		plus = 60;
+		break;
+	case Enemy2:
+		plus = 50;
+		break;
+	case Enemy3:
+		plus = 40;
+		break;
+	case Enemy4:
+		plus = 30;
+		break;
+	}
+	score = 1610;
+
+	score = score + plus;
+	GameManager& GameInst = GameManager::GetGameManager();
+	GameInst.SetScore(score);
+
+}
+bool EnemyManager::CheckCollisionWithProjectile(Proyectil& proyectil) {
 	// Implementar lógica para verificar si un proyectil ha colisionado con un enemigo
 	for (int row = 0; row < ROW; row++) {
 		for (int col = 0; col < COL; col++) {
 			if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil.GetRectangle())) {
-				enemies[row][col].SetAlive(false);
+				enemies[row][col].SetAlive(false);				
+				SetScore(row,col);
+				proyectil.Deactivate();
 				return true;
 			}
 		}
 	}
-	return false; // Esto es un ejemplo, ajusta según tu lógica de colisión
+	return false; 
 }
 
 bool EnemyManager::CheckCollisionWithPlayer(Vector2 playerPos, Vector2 playerSize) {
@@ -193,5 +201,5 @@ bool EnemyManager::CheckCollisionWithPlayer(Vector2 playerPos, Vector2 playerSiz
 			return true;
 		}
 	}
-	return false; // Esto es un ejemplo, ajusta según tu lógica de colisión
+	return false; 
 }

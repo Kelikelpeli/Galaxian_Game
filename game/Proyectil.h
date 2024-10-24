@@ -1,6 +1,5 @@
 #pragma once
 #include "raylib.h"
-//#define MAX_PROYECTILES 4
 
 
 class Proyectil {
@@ -16,6 +15,7 @@ public:
     Rectangle GetRectangle();
     bool IsLanzado();
     void SetLanzado(bool lanzado);
+    void SetPosition(float posX, float posY);
 
 private:
     Rectangle proyectilRect;

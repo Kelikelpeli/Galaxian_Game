@@ -6,7 +6,6 @@ void Proyectil::InitProyectil(float x, float y, float width, float height, float
 	this->active = active;
 	this->direccionY = direccionY;
 	lanzado = false;
-	//DrawProyectil();
 }
 void Proyectil::UpdateProyectil(float deltaTime) {
 	if ( lanzado) {
@@ -49,10 +48,8 @@ void Proyectil::SetLanzado(bool lanzado)
 }
 
 void Proyectil::Deactivate() {
-
 	active = false;
 	lanzado = false;
-
 }
 void Proyectil::Reinicio() {
 	active = true;
@@ -60,4 +57,8 @@ void Proyectil::Reinicio() {
 }
 Rectangle Proyectil::GetRectangle() {
 	return proyectilRect;
+}
+void Proyectil::SetPosition(float posX, float posY){
+	proyectilRect.x = posX;
+	proyectilRect.y = posY;
 }

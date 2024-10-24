@@ -71,7 +71,7 @@ private:
 
 	int score = 0;
 	int seconds = 0;
-	bool win = false;
+	//bool win = false;
 
 	Level NumLevel = Level::Title;
 
@@ -89,6 +89,6 @@ private:
 	StateMachineMngr* ScreenState;
 
 	//variable de ganar o perder
-	bool hasWon=true;
+	bool hasWon;
 
 };
