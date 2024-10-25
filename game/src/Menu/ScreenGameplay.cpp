@@ -12,8 +12,6 @@
 
 Player player;
 
-
-
 ScreenGameplayState::ScreenGameplayState()
 {
 
@@ -40,6 +38,8 @@ void ScreenGameplayState::InitScreen(void)
 	// Inicializar enemigos
 	enemyManager.InitEnemies();
 
+	
+
 }
 
 void ScreenGameplayState::UpdateScreen(float deltaTime)
@@ -53,6 +53,8 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 	GameManager& GameInst = GameManager::GetGameManager();
 	if (GameInst.GetScore() >= 1640) {
 		GameInst.SetGameResult(true);
+		GameInst.SetScore(0);
+		player.SetLives(3);
 		finishScreen = 4;
 	}
 
@@ -72,6 +74,8 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 		if (player.GetLives() <= 0) {
 			GameManager& GameInst = GameManager::GetGameManager();
 			GameInst.SetGameResult(false);
+			GameInst.SetScore(0);
+			player.SetLives(3);
 			finishScreen = 4; // END SCREEN
 		}
 	}

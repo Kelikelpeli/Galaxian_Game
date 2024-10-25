@@ -41,6 +41,7 @@ void GameManager::InitGame()
     // Setup and init first screen
     ScreenState = &ScreenGameplayState::getInstance();
     ScreenState->InitScreen();
+    
      
 }
 //-------------------------------------------------------

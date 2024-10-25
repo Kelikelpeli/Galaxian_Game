@@ -15,8 +15,7 @@ ScreenEndingState& ScreenEndingState::getInstance()
 
 void ScreenEndingState::InitScreen(void)
 {
-	GameManager GameInst = GameManager::GetGameManager();
-	GameInst.SetScore(0);
+	
 	framesCounter = 0;
 	finishScreen = 0;
 
@@ -39,7 +38,9 @@ void ScreenEndingState::UpdateScreen(float deltaTime)
 {
 	framesCounter++;
 
-	if (!GameManager::GameManager().GetGameResult())
+
+	GameManager& GameInst = GameManager::GetGameManager();
+	if (!GameInst.GetGameResult())
 	{
 
 		//animacion Game Over
@@ -59,7 +60,7 @@ void ScreenEndingState::UpdateScreen(float deltaTime)
 		}
 	}
 	//animacion you win
-	else if (GameManager::GameManager().GetGameResult()) 
+	else 
 	{
 		if (scalingUp)
 		{
@@ -101,7 +102,7 @@ void ScreenEndingState::DrawScreen(void)
 	Font font = GameInst.GetArcadeFont();
 
 	// Write this in case of win
-	if (GameInst.GetGameResult()) 
+	if (GameInst.GetGameResult())
 	{
 		//DrawTextEx(font, "YOU WIN!", Vector2{ (GetScreenWidth() - MeasureTextEx(font, "YOU WIN!", font.baseSize * 2.0f, 1).x) / 2.f, (GetScreenHeight() / 2.f) - 150 }, font.baseSize * 2.0f, 1, WHITE);
 

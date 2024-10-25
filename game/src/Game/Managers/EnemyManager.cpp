@@ -97,6 +97,8 @@ void EnemyManager::UpdateEnemies(float deltaTime) {
 }
 
 void EnemyManager::DrawEnemies() {
+	GameManager& GameInst = GameManager::GetGameManager();
+
 	for (int row = 0; row < ROW; row++) {
 		for (int col = 0; col < COL; col++) {
 			EnemyType type = enemies[row][col].GetType();
@@ -124,8 +126,11 @@ void EnemyManager::DrawEnemies() {
 		}
 	}
 
-	DrawTextEx(GetFontDefault(), "SCORE ADVANCE TABLE", Vector2{ 50, 300 }, 20, 1, WHITE);
-	DrawTextEx(GetFontDefault(), "CONVOY", Vector2{ 125, 300 + 30 }, 20, 1, BLUE);
+
+	Font font = GameInst.GetArcadeFont();
+
+	DrawTextEx(font, "SCORE ADVANCE TABLE", Vector2{ 50, 300 }, 20, 1, WHITE);
+	DrawTextEx(font, "CONVOY", Vector2{ 125, 300 + 30 }, 20, 1, BLUE);
 
 	Texture2D enemyTextures[4] = { enemy1, enemy2, enemy3, enemy4 };
 	int scores[4] = { 60, 50, 40, 30 };
@@ -155,7 +160,7 @@ int EnemyManager::GetScore() {
 	return score;
 }
 void EnemyManager::SetScore(int row, int col) {
-	int plus;
+	int plus=0;
 	switch (enemies[row][col].GetType()) {
 	case Enemy1:
 		plus = 60;
@@ -170,7 +175,6 @@ void EnemyManager::SetScore(int row, int col) {
 		plus = 30;
 		break;
 	}
-	score = 1610;
 
 	score = score + plus;
 	GameManager& GameInst = GameManager::GetGameManager();
