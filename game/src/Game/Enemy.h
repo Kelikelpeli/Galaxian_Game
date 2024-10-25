@@ -8,27 +8,18 @@ enum EnemyType { Empty, Enemy1, Enemy2, Enemy3, Enemy4 };
 class Enemy {
 public:
     void InitEnemy(float x, float y);
-    void UpdateEnemy(float deltaTime);
     void DrawEnemy();
-    EnemyType GetType();
+    EnemyType GetType()const;
     void SetType(EnemyType type);
-    float GetX();        
-    float GetY();
-    bool IsAlive();
+    float GetX()const;
+    float GetY()const;
+    bool IsAlive()const;
     void SetAlive(bool isAlive);
-
     void MoveEnemy(float dirX, float dirY);
-
-    Rectangle GetRectangle();
+    Rectangle GetRectangle() const;
 
 private:
     Rectangle enemyRect;
     EnemyType type;
-    bool isAlive;
-
-   
-    float pySpeed = 250.f;
-    float pyEnfriamiento = 0.f;  //contador para esperar 0.5 segundos entre proyectiles
-    bool pyLanzado[MAX_PROYECTILES];
-    Rectangle proyectil[MAX_PROYECTILES];
+    bool isAlive;   
 };

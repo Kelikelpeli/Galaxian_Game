@@ -2,7 +2,11 @@
 #include "Game/Managers/GameManager.h"
 
 //constructor
-Player::Player() : speed(120.f), lives(3), cooldown(0) {}
+Player::Player() : speed(120.f), lives(3), cooldown(0) {
+	for (int i = 0; i < MAX_PROYECTILES; i++) {
+		proyectiles[i] = Proyectil();  // start every bullet
+	}
+}
 
 
 void Player::Init(Vector2 screenSize) {
@@ -16,7 +20,7 @@ void Player::Init(Vector2 screenSize) {
 }
 
 
-// Actualiza la lógica del jugador, incluyendo el movimiento, disparo y actualización de proyectiles
+// Upload player logic, including movement, shooting and bullets
 void Player::Update(float deltaTime, Texture2D landscape) {
 
 	//player movement
@@ -50,7 +54,7 @@ void Player::Update(float deltaTime, Texture2D landscape) {
 	//shoot and start cooldown
 	if (IsKeyPressed(KEY_SPACE) && cooldown <= 0) {
 		Shoot(deltaTime);
-		cooldown = 0.5f;
+		cooldown = COOLDOWN;
 	}
 
 	for (int i = 0; i < MAX_PROYECTILES; i++) {

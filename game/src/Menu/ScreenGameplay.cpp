@@ -10,12 +10,9 @@
 
 #include <string>
 
-Player player;
+Player player; //Initialize the player
 
-ScreenGameplayState::ScreenGameplayState()
-{
-
-}
+ScreenGameplayState::ScreenGameplayState(){}
 
 ScreenGameplayState& ScreenGameplayState::getInstance()
 {
@@ -28,20 +25,18 @@ void ScreenGameplayState::InitScreen(void)
 	framesCounter = 0;
 	finishScreen = 0;
 
-	//TEXTURAS
+	//Background texture
 	landscape = LoadTexture("resources/Game/Landscape.png");
 
-	 // Inicializar player
+	 //Start player
 	Vector2 screenSize = { (float)GetScreenWidth(), (float)GetScreenHeight() };
 	player.Init(screenSize);
 
-	// Inicializar enemigos
+	//Start enemies
 	enemyManager.InitEnemies();
-
-	
-
 }
 
+//Verify if Player win or not, and if he had been hit.
 void ScreenGameplayState::UpdateScreen(float deltaTime)
 {
 	EvaluateInput();
@@ -49,7 +44,7 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 
 	// GAMEPLAY
 	player.Update(deltaTime, landscape);
-
+	//verify if player win or not
 	GameManager& GameInst = GameManager::GetGameManager();
 	if (GameInst.GetScore() >= 1640) {
 		GameInst.SetGameResult(true);
@@ -57,18 +52,6 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 		player.SetLives(3);
 		finishScreen = 4;
 	}
-
-	// Actualizar enemigos
-	enemyManager.UpdateEnemies(deltaTime);
-
-	// Detectar colisiones entre los proyectiles del jugador y los enemigos
-	for (int i = 0; i < MAX_PROYECTILES; i++) {
-		if (player.GetProyectil(i).IsLanzado()) {
-			enemyManager.CheckCollisionWithProjectile(player.GetProyectil(i));			
-		}
-	}
-
-	// Verificar si el jugador ha sido golpeado
 	if (enemyManager.CheckCollisionWithPlayer(player.GetPosition(), player.GetSize())) {
 		player.DecreaseLife();
 		if (player.GetLives() <= 0) {
@@ -79,42 +62,42 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 			finishScreen = 4; // END SCREEN
 		}
 	}
-	
+
+	// Update enemies
+	enemyManager.UpdateEnemies(deltaTime);
+
+	//Detect collisions between player bullets and enemies
+	for (int i = 0; i < MAX_PROYECTILES; i++) {
+		if (player.GetProyectil(i).IsLanzado()) {
+			enemyManager.CheckCollisionWithProjectile(player.GetProyectil(i));			
+		}
+	}	
 }
 
+//Draw background, score and other elements
 void ScreenGameplayState::DrawScreen(void)
 {
 
+	//Background
 	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 	DrawTexture(landscape, (GetScreenWidth() - (landscape.width)) / 2, (GetScreenHeight() - landscape.height) / 4, WHITE);
 
 	//Player
 	player.Draw();
 
-	// Dibujar enemigos
-	enemyManager.DrawEnemies();
+	//Enemies
+	enemyManager.DrawEnemies();	
 
+	// UI Score
 	GameManager& GameInst = GameManager::GetGameManager();
-
-	// UI Score, lives
-
-	Font font = GameInst.GetArcadeFont();
-
-	
+	Font font = GameInst.GetArcadeFont();	
 	float textWidth = MeasureTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", 25, 3).x;
 	float posx = (275) - (textWidth / 2.f);
 	DrawTextEx(font, "SCORE:", Vector2{ posx, 100.f }, 25, 3, WHITE);
-	DrawText(to_string(GameInst.GetScore()).c_str(), posx+130, 100.f, 25, WHITE);
-	
-	enemyManager;
+	DrawText(to_string(GameInst.GetScore()).c_str(), posx+130, 100.f, 25, WHITE);	
 }
 
 
-void ScreenGameplayState::UnloadScreen(void)
-{
-	UnloadTexture(landscape);
-	player.Unload();
-}
 
 int  ScreenGameplayState::FinishScreen(void)
 {
@@ -139,4 +122,10 @@ void ScreenGameplayState::DrawDebug()
 {
 	GameManager& GameInst = GameManager::GetGameManager();
 
+}
+void ScreenGameplayState::UnloadScreen(void)
+{
+	UnloadTexture(landscape);
+	player.Unload();
+	enemyManager.UnloadEnemies();
 }

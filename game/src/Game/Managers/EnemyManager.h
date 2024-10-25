@@ -12,13 +12,15 @@ public:
     void InitEnemies();
     void UpdateEnemies(float deltaTime);
     void DrawEnemies();
-    void LanzarProyectiles(float posx,float posy);
+    void UnloadEnemies();
     bool CheckCollisionWithProjectile(Proyectil& proyectil);
     bool CheckCollisionWithPlayer(Vector2 playerPos, Vector2 playerSize);
-    int GetScore();
-    void SetScore(int row, int col);
+
 private:
-    //texturas
+    void LanzarProyectiles(float posx, float posy);
+    void SetScore(int row, int col);
+
+    //Textures
     Texture2D enemy1;
     Texture2D enemy2;
     Texture2D enemy3;
@@ -33,6 +35,5 @@ private:
     //proyectiles
     Proyectil pjProyectiles[MAX_PROYECTILES];
     int randomNum = 0;
-    Vector2 randomEnemy;
     int score = 0;
 };

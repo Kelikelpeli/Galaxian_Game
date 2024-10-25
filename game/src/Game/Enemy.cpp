@@ -1,48 +1,50 @@
 #include "Enemy.h"
 
 void Enemy::InitEnemy(float x, float y) {
-    enemyRect = { x, y, 40, 40 };  // Setting enemy size
-    type = Enemy1;  // Example enemy type
-    isAlive = true;
+	enemyRect = { x, y, 40, 40 };
+	type = Enemy1;
+	isAlive = true;
 }
 
-void Enemy::UpdateEnemy(float deltaTime) {
-    // Logic for enemy movement or behavior
-}
+//there's no need for update function in this class
 
 void Enemy::DrawEnemy() {
-    if (isAlive) {
-        DrawRectangleRec(enemyRect, RED);  // Placeholder drawing for enemy
-    }
+	if (isAlive) {
+		DrawRectangleRec(enemyRect, RED);  // Placeholder drawing for enemy
+	}
 }
+
 void Enemy::SetType(EnemyType type) {
-    this->type = type;
+	this->type = type;
 }
 
-EnemyType Enemy::GetType() {
-    return type;  // Devolver el tipo de enemigo
+EnemyType Enemy::GetType() const {
+	return type;
 }
 
-float Enemy::GetX() {
-    return enemyRect.x;  // Devolver la coordenada X
+float Enemy::GetX() const {
+	return enemyRect.x;
 }
 
-float Enemy::GetY() {
-    return enemyRect.y;  // Devolver la coordenada Y
+float Enemy::GetY() const {
+	return enemyRect.y;
 }
+
+//Movement logic
 void Enemy::MoveEnemy(float dirX, float dirY) {
-    enemyRect.x += dirX;
-    enemyRect.y += dirY;
+	enemyRect.x += dirX;
+	enemyRect.y += dirY;
 }
-bool Enemy::IsAlive() {
-    return isAlive;
+
+bool Enemy::IsAlive() const{
+	return isAlive;
 }
 void Enemy::SetAlive(bool alive) {
-   isAlive = alive;   
+	isAlive = alive;
 
 }
-Rectangle Enemy::GetRectangle()
-{
-    return enemyRect;
-    
+
+//Take de rect representation of the enemy (to detect collisions)
+Rectangle Enemy::GetRectangle() const {
+	return enemyRect;
 }
