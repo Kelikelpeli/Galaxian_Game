@@ -28,6 +28,11 @@ void ScreenGameplayState::InitScreen(void)
 	//Background texture
 	landscape = LoadTexture("resources/Game/Landscape.png");
 
+	//Background music
+	backgroundMusic = LoadMusicStream("resources/Sounds/01.Ambient-loop.mp3");
+	wSetMusicVolume(backgroundMusic, musicVolume);
+	PlayMusicStream(backgroundMusic);
+
 	//Start player
 	Vector2 screenSize = { (float)GetScreenWidth(), (float)GetScreenHeight() };
 	player.Init(screenSize);
@@ -41,6 +46,7 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 {
 	EvaluateInput();
 	framesCounter++;
+	//UpdateMusicStream(backgroundMusic);
 
 	// GAMEPLAY
 	player.Update(deltaTime, landscape);
@@ -127,4 +133,6 @@ void ScreenGameplayState::UnloadScreen(void)
 	UnloadTexture(landscape);
 	player.Unload();
 	enemyManager.UnloadEnemies();
+	//StopMusicStream(backgroundMusic);
+	//UnloadMusicStream(backgroundMusic);
 }

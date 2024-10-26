@@ -26,6 +26,9 @@ private:
     Texture2D enemy3;
     Texture2D enemy4;
 
+    //Sounds
+    Sound fxHitEnemy = { 0 };
+
     std::array<std::array<Enemy, COL>, ROW> enemies;
 
     float enemySpeed = 0.f;

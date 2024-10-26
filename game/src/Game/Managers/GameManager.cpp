@@ -36,6 +36,7 @@ void GameManager::InitGame()
     // Load global data (assets that must be available in all screens, i.e. font)
     arcadeFont = LoadFont("resources/Fonts/ArcadeFont.ttf");
     alienFont = LoadFont("resources/Fonts/AlienFont.ttf");
+    InitAudioDevice();
 
 
     // Setup and init first screen

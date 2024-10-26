@@ -12,6 +12,10 @@ Player::Player() : speed(120.f), lives(3), cooldown(0) {
 void Player::Init(Vector2 screenSize) {
 	GameManager& GameInst = GameManager::GetGameManager();
 	playerTexture = LoadTexture("resources/Game/Player.png");
+	fxShoot = LoadSound("resources/Sounds/03. Shoot.mp3"); 
+	if (IsAudioDeviceReady()) {
+		SetSoundVolume(fxShoot, 0.8f); // Configura el volumen solo si el dispositivo está listo
+	}
 	position = { screenSize.x / 2.f, screenSize.y - 105.f };
 	for (int i = 0; i < MAX_PROYECTILES; i++) {
 		proyectiles[i].InitProyectil(position.x + (playerTexture.width / 2) - 1.5f, position.y - 13.f, 3.f, 13.f, 100.f, false, 1);
@@ -53,6 +57,7 @@ void Player::Update(float deltaTime, Texture2D landscape) {
 
 	//shoot and start cooldown
 	if (IsKeyPressed(KEY_SPACE) && cooldown <= 0) {
+		PlaySound(fxShoot);
 		Shoot(deltaTime);
 		cooldown = COOLDOWN;
 	}
@@ -116,4 +121,5 @@ Proyectil& Player::GetProyectil(int index) {
 
 void Player::Unload() {
 	UnloadTexture(playerTexture);
+	UnloadSound(fxShoot);
 }

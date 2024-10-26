@@ -16,6 +16,9 @@ void EnemyManager::InitEnemies() {
 	enemy3 = LoadTexture("resources/Game/Enemy3.png");
 	enemy4 = LoadTexture("resources/Game/Enemy4.png");
 
+	//Sounds
+	fxHitEnemy = LoadSound("resources/Sounds/07. Hit Enemy.mp3");
+
 	for (int row = 0; row < ROW; row++) {
 		for (int col = 0; col < COL; col++) {
 			enemies[row][col].InitEnemy(((GetScreenWidth() - COL * 40) / 2) + col * 40, row * 40 + 100);
@@ -183,6 +186,7 @@ bool EnemyManager::CheckCollisionWithProjectile(Proyectil& proyectil) {
 	for (int row = 0; row < ROW; row++) {
 		for (int col = 0; col < COL; col++) {
 			if (enemies[row][col].IsAlive() && CheckCollisionRecs(enemies[row][col].GetRectangle(), proyectil.GetRectangle())) {
+				PlaySound(fxHitEnemy);
 				enemies[row][col].SetAlive(false);
 				SetScore(row, col);
 				proyectil.Deactivate();
@@ -209,4 +213,5 @@ void EnemyManager::UnloadEnemies() {
 	UnloadTexture(enemy2);
 	UnloadTexture(enemy3);
 	UnloadTexture(enemy4);
+	UnloadSound(fxHitEnemy);
 }
