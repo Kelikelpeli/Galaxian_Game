@@ -35,5 +35,4 @@ private:
     //proyectiles
     Proyectil pjProyectiles[MAX_PROYECTILES];
     int randomNum = 0;
-    int score = 0;
 };

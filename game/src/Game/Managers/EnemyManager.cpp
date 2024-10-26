@@ -174,8 +174,7 @@ void EnemyManager::SetScore(int row, int col) {
 	}
 
 	//calculate the total score
-	score += plus;
-	GameManager::GetGameManager().SetScore(score);
+	GameManager::GetGameManager().SetScore(GameManager::GetGameManager().GetScore() + plus);
 }
 
 //Detect when a player bullet hit a alive enemy and desactivate both

@@ -12,7 +12,7 @@
 
 Player player; //Initialize the player
 
-ScreenGameplayState::ScreenGameplayState(){}
+ScreenGameplayState::ScreenGameplayState() {}
 
 ScreenGameplayState& ScreenGameplayState::getInstance()
 {
@@ -28,7 +28,7 @@ void ScreenGameplayState::InitScreen(void)
 	//Background texture
 	landscape = LoadTexture("resources/Game/Landscape.png");
 
-	 //Start player
+	//Start player
 	Vector2 screenSize = { (float)GetScreenWidth(), (float)GetScreenHeight() };
 	player.Init(screenSize);
 
@@ -69,9 +69,9 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 	//Detect collisions between player bullets and enemies
 	for (int i = 0; i < MAX_PROYECTILES; i++) {
 		if (player.GetProyectil(i).IsLanzado()) {
-			enemyManager.CheckCollisionWithProjectile(player.GetProyectil(i));			
+			enemyManager.CheckCollisionWithProjectile(player.GetProyectil(i));
 		}
-	}	
+	}
 }
 
 //Draw background, score and other elements
@@ -86,15 +86,15 @@ void ScreenGameplayState::DrawScreen(void)
 	player.Draw();
 
 	//Enemies
-	enemyManager.DrawEnemies();	
+	enemyManager.DrawEnemies();
 
 	// UI Score
 	GameManager& GameInst = GameManager::GetGameManager();
-	Font font = GameInst.GetArcadeFont();	
+	Font font = GameInst.GetArcadeFont();
 	float textWidth = MeasureTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", 25, 3).x;
 	float posx = (275) - (textWidth / 2.f);
 	DrawTextEx(font, "SCORE:", Vector2{ posx, 100.f }, 25, 3, WHITE);
-	DrawText(to_string(GameInst.GetScore()).c_str(), posx+130, 100.f, 25, WHITE);	
+	DrawText(to_string(GameInst.GetScore()).c_str(), posx + 130, 100.f, 25, WHITE);
 }
 
 
@@ -106,11 +106,10 @@ int  ScreenGameplayState::FinishScreen(void)
 
 void ScreenGameplayState::EvaluateInput()
 {
-
-	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
-	{
-		finishScreen = 4;   // END SCREEN
-	}
+//	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+//	{
+//		finishScreen = 4;   // END SCREEN
+//	}
 }
 
 void ScreenGameplayState::DebugOptions()
