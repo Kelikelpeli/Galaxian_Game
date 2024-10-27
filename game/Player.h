@@ -23,6 +23,7 @@ private:
 
     Texture2D playerTexture = { 0 };;
     Sound fxShoot = { 0 };
+    Sound fxDamage = { 0 };
     Vector2 position = { 0 };;
     float speed;
     int lives;

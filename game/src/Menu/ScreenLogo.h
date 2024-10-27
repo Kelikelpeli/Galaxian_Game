@@ -25,9 +25,7 @@ public:
 private:
 	ScreenLogoState();
 	ScreenLogoState(const ScreenLogoState& other);
-	ScreenLogoState& operator= (const ScreenLogoState& other);
-
-	
+	ScreenLogoState& operator= (const ScreenLogoState& other);	
 
     int chargeTime_;
 
@@ -45,9 +43,8 @@ private:
 	int bottomSideRecWidth = 0;
 	int rightSideRecHeight = 0;
 
-	int state = 0;              // Logo animation states
-	float alpha = 1.0f;         // Useful for fading
+	int state = 0;            
+	float alpha = 1.0f;       
 
-	Texture2D logo;				//textura del logo
-
+	Texture2D logo = { 0 };
 };

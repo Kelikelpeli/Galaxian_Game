@@ -123,6 +123,11 @@ void GameManager::UpdateFrame(float deltaTime)
                         TransitionToScreen((int)ScreenState::TITLE);
                         ScreenState = &ScreenTitleState::getInstance();
                     }
+                    else if (InputKey == 3)
+                    {
+                        TransitionToScreen((int)ScreenState::GAMEPLAY);
+                        ScreenState = &ScreenGameplayState::getInstance();
+                    }
                 }
             } break;
             default: break;

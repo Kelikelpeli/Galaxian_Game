@@ -34,7 +34,7 @@ private:
 	//texturas
 	Texture2D landscape = { 0 };
 	Music backgroundMusic = { 0 };
-	float musicVolume = 0.01f;
+	float musicVolume = 0.1f;
 
 	int framesCounter = 0;
 	int finishScreen = 0;

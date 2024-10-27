@@ -1,8 +1,6 @@
 #include "ScreenEnding.h"
 #include "Game/Managers/GameManager.h"
-
 #include "raylib.h"
-
 #include <string>
 
 ScreenEndingState& ScreenEndingState::getInstance()
@@ -17,6 +15,8 @@ void ScreenEndingState::InitScreen(void)
 
 	framesCounter = 0;
 	finishScreen = 0;
+	fxWin = LoadSound("resources/Sounds/10.WinSaw.wav");
+	fxGameOver = LoadSound("resources/Sounds/09.GameOver.wav");
 
 	//start position letters game over
 	for (int i = 0; i < 9; i++)
@@ -29,6 +29,14 @@ void ScreenEndingState::InitScreen(void)
 	winScale = 0.0f;
 	scaleSpeed = 0.2f;
 	scalingUp = true;
+	if (GameManager::GetGameManager().GetGameResult()) 
+	{
+		PlaySound(fxWin);
+	}
+	else 
+	{
+		PlaySound(fxGameOver);
+	}
 }
 
 void ScreenEndingState::UpdateScreen(float deltaTime)
@@ -39,7 +47,6 @@ void ScreenEndingState::UpdateScreen(float deltaTime)
 	//Game Over start
 	if (!GameInst.GetGameResult())
 	{
-
 		if (currentLetterIndex < 9 && framesCounter % 25 == 0)
 		{
 			currentLetterIndex++;
@@ -54,10 +61,12 @@ void ScreenEndingState::UpdateScreen(float deltaTime)
 				lettersFallSpeed += 1;  //Aceleration
 			}
 		}
+
 	}
 	//Win start
 	else
 	{
+
 		if (scalingUp)
 		{
 			winScale += scaleSpeed;
@@ -76,17 +85,22 @@ void ScreenEndingState::UpdateScreen(float deltaTime)
 				winScale = 3.0f;
 			}
 		}
+
 	}
 
 	//To go to another screens...
 	if (IsKeyPressed(KEY_ENTER))
 	{
-		finishScreen = 1; // GAMEPLAY
+		finishScreen = 1; // TITLE
 
 	}
 	if (IsKeyPressed(KEY_O))
 	{
 		finishScreen = 2;   // OPTIONS
+	}
+	if (IsKeyPressed(KEY_R)) 
+	{
+		finishScreen = 3; // GAMEPLAY
 	}
 }
 
@@ -116,11 +130,18 @@ void ScreenEndingState::DrawScreen(void)
 		}
 	}
 
-	DrawTextEx(font, "Press Enter for Playing", Vector2{ (GetScreenWidth() - MeasureTextEx(font, "Press Enter for Playing", 25, 2).x) / 2.f, 450.f }, 25, 2, WHITE);
-	DrawTextEx(font, "Press 'O' for Options", Vector2{ (GetScreenWidth() - MeasureTextEx(font, "Press 'O' for Options", 25, 2).x) / 2.f, 500.f }, 25, 2, WHITE);
+	//Options text
+	const char* line1 = "Press Enter to go to Title screen";
+	const char* line2 = "Press 'R' to replay";
+	const char* line3 = "Press 'O' for Options";
+	DrawTextEx(font, line1, Vector2{ (GetScreenWidth() - MeasureTextEx(font, line1, 25, 2).x) / 2.f, 450.f }, 25, 2, WHITE);
+	DrawTextEx(font, line2, Vector2{ (GetScreenWidth() - MeasureTextEx(font, line2, 25, 2).x) / 2.f, 500.f }, 25, 2, WHITE);
+	DrawTextEx(font, line3, Vector2{ (GetScreenWidth() - MeasureTextEx(font, line3, 25, 2).x) / 2.f, 550.f }, 25, 2, WHITE);
 }
 void ScreenEndingState::UnloadScreen(void)
 {
+	UnloadSound(fxWin);
+	UnloadSound(fxGameOver);
 }
 
 int  ScreenEndingState::FinishScreen(void)

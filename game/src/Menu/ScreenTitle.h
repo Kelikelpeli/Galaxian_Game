@@ -31,9 +31,10 @@ private:
 	int framesCounter = 0;
 	int finishScreen = 0;
 
-	Texture2D logoGalaxian = { 0 };				//textura del logo
+	Texture2D logoGalaxian = { 0 };
+	Sound fxStart = { 0 };
 
-	//variables para logica de dibujo de by Raquel L.
+	//Draw by Raquel L.
 	int currentCharIndex = 0;
 	int blinkCounter = 0;
 	int blinkSpeed = 0;

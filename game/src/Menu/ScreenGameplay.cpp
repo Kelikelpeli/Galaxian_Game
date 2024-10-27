@@ -30,7 +30,7 @@ void ScreenGameplayState::InitScreen(void)
 
 	//Background music
 	backgroundMusic = LoadMusicStream("resources/Sounds/01.Ambient-loop.mp3");
-	wSetMusicVolume(backgroundMusic, musicVolume);
+	SetMusicVolume(backgroundMusic, musicVolume);
 	PlayMusicStream(backgroundMusic);
 
 	//Start player
@@ -46,7 +46,7 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 {
 	EvaluateInput();
 	framesCounter++;
-	//UpdateMusicStream(backgroundMusic);
+	UpdateMusicStream(backgroundMusic);
 
 	// GAMEPLAY
 	player.Update(deltaTime, landscape);
@@ -133,6 +133,6 @@ void ScreenGameplayState::UnloadScreen(void)
 	UnloadTexture(landscape);
 	player.Unload();
 	enemyManager.UnloadEnemies();
-	//StopMusicStream(backgroundMusic);
-	//UnloadMusicStream(backgroundMusic);
+	StopMusicStream(backgroundMusic);
+	UnloadMusicStream(backgroundMusic);
 }

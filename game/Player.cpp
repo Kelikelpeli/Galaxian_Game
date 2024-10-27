@@ -13,7 +13,9 @@ void Player::Init(Vector2 screenSize) {
 	GameManager& GameInst = GameManager::GetGameManager();
 	playerTexture = LoadTexture("resources/Game/Player.png");
 	fxShoot = LoadSound("resources/Sounds/03. Shoot.mp3"); 
+	fxDamage = LoadSound("resources/Sounds/04. Fighter Loss.mp3");
 	if (IsAudioDeviceReady()) {
+		SetSoundVolume(fxDamage, 0.3f);
 		SetSoundVolume(fxShoot, 0.8f); // Configura el volumen solo si el dispositivo está listo
 	}
 	position = { screenSize.x / 2.f, screenSize.y - 105.f };
@@ -108,6 +110,7 @@ int Player::GetLives() const {
 	return lives;
 }
 void Player::DecreaseLife() {
+	PlaySound(fxDamage);
 	if (lives > 0) {
 		lives--;
 	}
@@ -122,4 +125,5 @@ Proyectil& Player::GetProyectil(int index) {
 void Player::Unload() {
 	UnloadTexture(playerTexture);
 	UnloadSound(fxShoot);
+	UnloadSound(fxDamage);
 }

@@ -19,6 +19,9 @@ void ScreenTitleState::InitScreen(void)
 	// Use this to access to the Game instance
 	GameManager& GameInst = GameManager::GetGameManager();
 	logoGalaxian = LoadTexture("resources/Menu/MainLogo.png");
+	fxStart = LoadSound("resources/Sounds/02. Start Game.mp3");
+	SetSoundVolume(fxStart, 0.5f);
+	PlaySound(fxStart);
 
 	text = "by Raquel L.";
 	currentCharIndex = 0;
@@ -33,16 +36,13 @@ void ScreenTitleState::UpdateScreen(float deltaTime)
 {
 	GameManager& GameInst = GameManager::GetGameManager();
 
-	//animación de letras
+	//Words animation
 
 	framesCounter++;
-	if (framesCounter > 60&&framesCounter%4==0)
+	if (framesCounter > 60 && framesCounter % 4 == 0)
 	{
-		//parpadeo
+		//Blink
 		if (framesCounter % 2 == 0) isBlinking = !isBlinking;
-
-		//avanzar de letra
-
 		if (currentCharIndex < strlen(text)) {
 			currentCharIndex++;
 		}
@@ -63,22 +63,18 @@ void ScreenTitleState::DrawScreen(void)
 {
 	//logo
 	DrawTexture(logoGalaxian, (GetScreenWidth() - (logoGalaxian.width)) / 2, (GetScreenHeight() - logoGalaxian.height) / 4, WHITE);
-
-	//DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLUE);
-
 	GameManager& GameInst = GameManager::GetGameManager();
-	
-	//texto
+
 	float textWidth = MeasureTextEx(GameInst.GetArcadeFont(), text, 20, 2).x; // Aseguramos el espaciado de 2 para evitar problemas
 	float posx = (GetScreenWidth() / 2.f) - (textWidth / 2.f);
-	//DrawTextEx(GameInst.GetArcadeFont(), "by Raquel L.", Vector2{ posx, 450.f }, 20, 2, WHITE);
-	// letra por letra
-	for (int i = 0; i < strlen(text); i++) 
+
+	// Letter by letter
+	for (int i = 0; i < strlen(text); i++)
 	{
 		char letter[2] = { text[i], '\0' };
 
 		Font currentFont;
-		if (i < currentCharIndex) 
+		if (i < currentCharIndex)
 		{
 			currentFont = GameInst.GetArcadeFont();
 		}
@@ -87,11 +83,9 @@ void ScreenTitleState::DrawScreen(void)
 			currentFont = GameInst.GetAlienFont();
 
 		}
-
-		//dibujar letra
 		DrawTextEx(currentFont, letter, Vector2{ posx, 450.f }, 20, 2, WHITE);
 
-		//calcular posicion de la proxima
+		//Next position
 		posx += MeasureTextEx(currentFont, letter, 20, 2).x;
 	}
 
@@ -100,11 +94,9 @@ void ScreenTitleState::DrawScreen(void)
 	posx = (GetScreenWidth() / 2.f) - (textWidth / 2.f);
 	DrawTextEx(GameInst.GetArcadeFont(), "Press Enter for Playing", Vector2{ posx, 500.f }, 25, 3, WHITE);
 
-
 	textWidth = MeasureTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", 25, 3).x;
 	posx = (GetScreenWidth() / 2.f) - (textWidth / 2.f);
 	DrawTextEx(GameInst.GetArcadeFont(), "Press 'O' for Instructions", Vector2{ posx, 560.f }, 25, 3, WHITE);
-
 
 }
 
@@ -112,7 +104,7 @@ void ScreenTitleState::UnloadScreen(void)
 {
 	GameManager& GameInst = GameManager::GetGameManager();
 	UnloadTexture(logoGalaxian);
-
+	UnloadSound(fxStart);
 }
 
 int ScreenTitleState::FinishScreen(void)

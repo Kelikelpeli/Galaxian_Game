@@ -36,7 +36,7 @@ void ScreenOptionsState::DrawScreen(void)
     GameManager& GameInst = GameManager::GetGameManager();
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 
-    const char* line1 = "To move the spaceship use the direction keys or A,D.";
+    const char* line1 = "To move the spaceship use A,D. Shoot with Space";
     const char* line2 = "You have 3 lives, every enemy destroyed increases your score.";
     const char* line3 = "Yellow enemies add 60 points, red 50, purple 40, and blue 30.";
     const char* line4 = "To win, you must destroy all enemies.";

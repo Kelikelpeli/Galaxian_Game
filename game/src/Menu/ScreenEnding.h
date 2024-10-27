@@ -1,5 +1,6 @@
 #pragma once
 #include "StateMachineMngr.h"
+#include "raylib.h"
 
 class ScreenEndingState : public StateMachineMngr
 {
@@ -27,14 +28,16 @@ private:
 	int framesCounter = 0;
 	int finishScreen = 0;
 
-	//animacion game over
-	int letterYPositions[9];
+	//GAME OVER
+	int letterYPositions[9] = { 0 };
 	int currentLetterIndex = 0;
 	int lettersFallSpeed = 0;
+	Sound fxGameOver = { 0 };
 
-	//Animacion you win 
+	//WIN
 	float winScale = 0.0f;
 	float scaleSpeed = 0.05f;
 	bool scalingUp = true;
+	Sound fxWin = { 0 };
 
 };
